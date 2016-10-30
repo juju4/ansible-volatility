@@ -1,0 +1,25 @@
+---
+
+## https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
+## https://code.google.com/p/volatility/wiki/SampleMemoryImages
+
+- file: dest={{ volatility_installdir }}/samples state=directory
+
+- name: Download memory samples
+  get_url: url={{ item }}
+    dest={{ volatility_installdir }}/samples
+    mode=0600
+  with_items:
+    - http://www.cfreds.nist.gov/mem/memory-images.rar
+#    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
+    - http://www.mediafire.com/file/yxqodp1p2aca91x/0zapftis.rar
+#    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/11/sality.vmem.zip
+## HTTP Error 429: Bandwidth Error
+    - http://dl.dropbox.com/u/21148428/xp-clean.tgz
+    - http://dl.dropbox.com/u/21148428/xp-infected.tgz
+## 404
+#    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
+#    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/6/be2.vmem.zip
+    - http://amnesia.gtisc.gatech.edu/%7Emoyix/ds_fuzz_hidden_proc.img.bz2
+  ignore_errors: true
+

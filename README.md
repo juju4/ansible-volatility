@@ -1,0 +1,60 @@
+[![Build Status](https://travis-ci.org/juju4/ansible-volatility.svg?branch=master)](https://travis-ci.org/juju4/ansible-volatility)
+# volatility ansible role
+
+Ansible role to setup volatility
+http://www.volatilityfoundation.org/
+
+Setup is from source on Unix, binary on windows
+
+## Requirements & Dependencies
+
+### Ansible
+It was tested on the following versions:
+ * 2.0
+
+### Operating systems
+
+Tested with xenial, trusty and centos7
+
+## Example Playbook
+
+Just include this role in your list.
+For example
+
+```
+- host: all
+  roles:
+    - volatility
+```
+
+## Variables
+
+Nothing specific for now.
+
+## Continuous integration
+
+This role has a travis basic test (for github), more advanced with kitchen and also a Vagrantfile (test/vagrant).
+Default kitchen config (.kitchen.yml) is lxd-based, while (.kitchen.vagrant.yml) is vagrant/virtualbox based.
+
+Once you ensured all necessary roles are present, You can test with:
+```
+$ gem install kitchen-ansible kitchen-lxd_cli kitchen-sync kitchen-vagrant
+$ cd /path/to/roles/volatility
+$ kitchen verify
+$ kitchen login
+$ KITCHEN_YAML=".kitchen.vagrant.yml" kitchen verify
+```
+or
+```
+$ cd /path/to/roles/volatility/test/vagrant
+$ vagrant up
+$ vagrant ssh
+```
+
+## Troubleshooting & Known issues
+
+
+## License
+
+BSD 2-clause
+

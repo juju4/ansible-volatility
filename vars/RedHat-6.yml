@@ -1,0 +1,7 @@
+---
+
+python_deps:
+  - python
+  - python-devel
+  - python-pip
+

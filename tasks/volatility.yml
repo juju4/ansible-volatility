@@ -1,0 +1,21 @@
+---
+
+- set_fact:
+    #pip_url: https://github.com/volatilityfoundation/volatility.git
+    pip_url: https://github.com/volatilityfoundation/volatility/archive/master.tar.gz
+  when: volatility_release == 'HEAD'
+- set_fact:
+    pip_url: https://github.com/volatilityfoundation/volatility/archive/{{ volatility_release }}.tar.gz
+  when: volatility_release != 'HEAD'
+
+- name: install volatility pip dependencies
+  pip: name={{ item }} state=present
+  with_items: "{{ volatility_pip_pkg }}"
+
+- name: install volatility
+  pip: name={{ pip_url }} state=present
+
+- name: Volatility profiles
+  git: repo=https://github.com/volatilityfoundation/profiles.git
+       dest={{ volatility_installdir }}/profiles
+

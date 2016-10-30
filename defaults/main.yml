@@ -1,0 +1,11 @@
+---
+
+volatility_installdir: /usr/local/share/volatility
+volatility_release: HEAD
+#volatility_release: 2.5
+
+volatility_pip_pkg:
+  - distorm3
+
+volatility_samples: false
+
