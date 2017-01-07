@@ -12,7 +12,7 @@
   with_items:
     - http://www.cfreds.nist.gov/mem/memory-images.rar
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
-    - http://www.mediafire.com/file/yxqodp1p2aca91x/0zapftis.rar
+#    - http://www.mediafire.com/file/yxqodp1p2aca91x/0zapftis.rar
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/11/sality.vmem.zip
 ## HTTP Error 429: Bandwidth Error
     - http://dl.dropbox.com/u/21148428/xp-clean.tgz
@@ -21,5 +21,9 @@
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/6/be2.vmem.zip
     - http://amnesia.gtisc.gatech.edu/%7Emoyix/ds_fuzz_hidden_proc.img.bz2
+    - http://www.jonrajewski.com/data/Malware/stuxnet.vmem.zip
   ignore_errors: true
+
+- name: add unrar to unarchive
+  package: name=unrar state=present
 

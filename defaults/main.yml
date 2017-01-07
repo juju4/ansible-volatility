@@ -9,3 +9,13 @@ volatility_pip_pkg:
 
 volatility_samples: false
 
+volatility_scan: false
+volatility_scan_profile: 'WinXPSP2x86'
+volatility_scan_orchestrator_src: ''
+volatility_scan_remote_path: '/usr/local/share/volatility/samples/stuxnet.vmem.zip'
+volatility_scan_remote: yes
+volatility_scan_unarchive: true
+volatility_scan_file: 'stuxnet.vmem'
+volatility_scan_outdir: '/tmp/stuxout'
+volatility_scan_pull: false
+volatility_scan_pulldir: tmp/

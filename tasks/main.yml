@@ -27,3 +27,6 @@
 - include: memory-samples.yml
   when: volatility_samples is defined and volatility_samples
 
+- include: volatility-scan.yml
+  when: volatility_scan is defined and volatility_scan
+

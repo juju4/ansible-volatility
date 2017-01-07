@@ -1,0 +1,103 @@
+---
+
+## https://digital-forensics.sans.org/media/Poster-2015-Memory-Forensics.pdf
+## https://volatility-labs.blogspot.ca/2016/08/automating-detection-of-known-malware.html
+
+- name: ensure clamav is installed
+  package: name=clamav state=present
+
+- name: ensure target directories exist
+  file: dest={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ volatility_scan_remote_path | dirname }}"
+    - "{{ volatility_scan_outdir }}"
+    - "{{ volatility_scan_outdir }}/dlldump"
+    - "{{ volatility_scan_outdir }}/malfind"
+    - "{{ volatility_scan_outdir }}/moddump"
+
+- name: push file to analyze from orchestrator
+  copy: src={{ volatility_scan_orchestrator_src }} dest={{ volatility_scan_remote_path }} remote_src={{ volatility_scan_remote }}
+  when: volatility_remote_src is defined and volatility_remote_src != ''
+
+- name: uncompress file to analyze
+  unarchive: src={{ volatility_scan_remote_path }} dest={{ volatility_scan_remote_path | dirname }} mode=0600
+  when: volatility_scan_unarchive
+
+- name: execute volatility psxview
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} psxview | tee {{ volatility_scan_outdir }}/psxview.txt creates={{ volatility_scan_outdir }}/psxview.txt"
+
+- name: execute volatility dlllist
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} dlllist | tee {{ volatility_scan_outdir }}/dlllist.txt creates={{ volatility_scan_outdir }}/dlllist.txt"
+
+- name: execute volatility dlldump
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} dlldump —memory -D {{ volatility_scan_outdir }}/dlldump | tee {{ volatility_scan_outdir }}/dlldump.txt creates={{ volatility_scan_outdir }}/dlldump.txt"
+
+- name: execute volatility malfind
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} malfind -D {{ volatility_scan_outdir }}/malfind | tee {{ volatility_scan_outdir }}/malfind.txt creates={{ volatility_scan_outdir }}/malfind.txt"
+
+- name: execute volatility moddump
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} moddump —memory -D {{ volatility_scan_outdir }}/moddump | tee {{ volatility_scan_outdir }}/moddump.txt creates={{ volatility_scan_outdir }}/moddump.txt"
+
+- name: check file types of volatility output
+  shell: "file {{ volatility_scan_outdir }}/* | egrep -i '(PE32 executable|UPX compressed|data)' | tee {{ volatility_scan_outdir }}/file.txt creates={{ volatility_scan_outdir }}/file.txt"
+
+- name: execute clamscan on extracted file
+  command: "clamscan -ir -l {{ volatility_scan_outdir }}/clamscan.txt {{ volatility_scan_outdir }}/ creates={{ volatility_scan_outdir }}/clamscan.txt"
+  ignore_errors: true
+
+- name: execute volatility netscan
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} netscan | tee {{ volatility_scan_outdir }}/netscan.txt creates={{ volatility_scan_outdir }}/netscan.txt"
+
+- name: execute volatility ssdt
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} ssdt | tee {{ volatility_scan_outdir }}/ssdt.txt creates={{ volatility_scan_outdir }}/ssdt.txt"
+- name: match ntosk|win32k
+  command: "egrep -v '(ntosk|win32k)' {{ volatility_scan_outdir }}/ssdt.txt"
+  changed_when: false
+  ignore_errors: true
+
+- name: execute volatility usnparser
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} usnparser --output=csv --output-file={{ volatility_scan_outdir }}/usn.csv -CS | tee {{ volatility_scan_outdir }}/usnparser.txt creates={{ volatility_scan_outdir }}/usnparser.txt"
+
+- name: execute volatility autoruns
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} autoruns -t autoruns | tee {{ volatility_scan_outdir }}/autoruns.txt creates={{ volatility_scan_outdir }}/autoruns.txt"
+
+- name: execute volatility ethscan (pcap recovery)
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} ethscan --save-pcap={{ volatility_scan_outdir }}/out.pcap | tee {{ volatility_scan_outdir }}/ethscan.txt creates={{ volatility_scan_outdir }}/ethscan.txt"
+
+- name: execute volatility netscan (vista+)
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} netscan | tee {{ volatility_scan_outdir }}/netscan.txt creates={{ volatility_scan_outdir }}/netscan.txt"
+
+- name: execute volatility mimikatz
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} mimikatz | tee {{ volatility_scan_outdir }}/mimikatz.txt creates={{ volatility_scan_outdir }}/mimikatz.txt"
+
+- name: execute volatility firefoxhistory
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} firefoxhistory --output=csv --output-file={{ volatility_scan_outdir }}/firefox.csv | tee {{ volatility_scan_outdir }}/firefoxhistory.txt creates={{ volatility_scan_outdir }}/firefoxhistory.txt"
+
+- name: execute volatility consoles
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} consoles | tee {{ volatility_scan_outdir }}/consoles.txt creates={{ volatility_scan_outdir }}/consoles.txt"
+
+- name: execute volatility cmdscan
+  shell: "vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }} --profile={{ volatility_scan_profile }} cmdscan | tee {{ volatility_scan_outdir }}/cmdscan.txt creates={{ volatility_scan_outdir }}/cmdscan.txt"
+
+- name: check results
+  command: "{{ item }}"
+  with_items:
+    - "ls -lh {{ volatility_scan_outdir }}"
+    - "cat {{ volatility_scan_outdir }}/psxview.txt"
+    - "cat {{ volatility_scan_outdir }}/clamscan.txt"
+  changed_when: false
+  register: out
+- debug: var=out
+
+## wipe ? encrypt/sign archive? do on trusted computer anyway.
+
+- block:
+    - name: archive output content
+## v2.2 archive: "src={{ volatility_scan_outdir }} dest=/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
+      command: "tar czf /tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz {{ volatility_scan_outdir }}/ creates=/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
+    - name: retrieve output dir to orchestrator
+      fetch: "src={{ item }} dest={{ volatility_scan_pulldir }}/"
+      with_items:
+        - "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
+  when: volatility_scan_pull is defined and volatility_scan_pull
+

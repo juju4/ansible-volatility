@@ -32,4 +32,7 @@ suites:
   - name: default
     run_list:
     attributes:
+  - name: default-scan
+    run_list:
+    attributes:
 
