@@ -25,5 +25,5 @@
   ignore_errors: true
 
 - name: add unrar to unarchive
-  package: name=unrar state=present
+  package: name=unrar-free state=present
 
