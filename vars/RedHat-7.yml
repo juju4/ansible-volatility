@@ -6,3 +6,5 @@ python_deps:
   - python-pip
   - gcc
 
+unrar_pkg: 'rar'
+

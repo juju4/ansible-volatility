@@ -25,5 +25,5 @@
   ignore_errors: true
 
 - name: add unrar to unarchive
-  package: name=unrar-free state=present
+  package: name={{ unrar_pkg }} state=present
 
