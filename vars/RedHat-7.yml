@@ -6,5 +6,7 @@ python_deps:
   - python-pip
   - gcc
 
-unrar_pkg: 'rar'
+## https://bugzilla.redhat.com/show_bug.cgi?id=593702
+#unrar_pkg: 'rar'
+unrar_pkg: 'p7zip'
 
