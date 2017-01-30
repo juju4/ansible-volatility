@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/juju4/ansible-volatility.svg?branch=master)](https://travis-ci.org/juju4/ansible-volatility)
+[![Build Status - Master](https://travis-ci.org/juju4/ansible-volatility.svg?branch=master)](https://travis-ci.org/juju4/ansible-volatility)
+[![Build Status - Devel](https://travis-ci.org/juju4/ansible-volatility.svg?branch=devel)](https://travis-ci.org/juju4/ansible-volatility/branches)
 # volatility ansible role
 
 Ansible role to setup volatility
@@ -11,6 +12,7 @@ Setup is from source on Unix, binary on windows
 ### Ansible
 It was tested on the following versions:
  * 2.0
+ * 2.2
 
 ### Operating systems
 
@@ -24,7 +26,7 @@ For example
 ```
 - host: all
   roles:
-    - volatility
+    - juju4.volatility
 ```
 
 ## Variables
@@ -39,14 +41,14 @@ Default kitchen config (.kitchen.yml) is lxd-based, while (.kitchen.vagrant.yml)
 Once you ensured all necessary roles are present, You can test with:
 ```
 $ gem install kitchen-ansible kitchen-lxd_cli kitchen-sync kitchen-vagrant
-$ cd /path/to/roles/volatility
+$ cd /path/to/roles/juju4.volatility
 $ kitchen verify
 $ kitchen login
 $ KITCHEN_YAML=".kitchen.vagrant.yml" kitchen verify
 ```
 or
 ```
-$ cd /path/to/roles/volatility/test/vagrant
+$ cd /path/to/roles/juju4.volatility/test/vagrant
 $ vagrant up
 $ vagrant ssh
 ```
