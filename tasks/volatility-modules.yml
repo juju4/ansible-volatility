@@ -1,7 +1,9 @@
 ---
 
-- file: dest={{ volatility_installdir }}/volatilityplugins mode=0755 state=directory
+- name: ensure volatility plugins directory exists
+  file: dest={{ volatility_installdir }}/volatilityplugins mode=0755 state=directory
 
+## most of https://github.com/sans-dfir/sift-files/tree/master/volatility should be here
 - name: Volatility plugins developed and maintained by the community
   git: repo=https://github.com/volatilityfoundation/community.git
        dest={{ volatility_installdir }}/volatilityplugins/community
@@ -42,4 +44,5 @@
     dest: "{{ vol_plugins }}/autoruns.py"
     state: link
   when: vol_plugins is defined and not autoruns.stat.exists
+
 
