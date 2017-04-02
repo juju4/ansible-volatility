@@ -6,6 +6,7 @@ volatility_release: HEAD
 
 volatility_pip_pkg:
   - distorm3
+  - pyimpfuzzy
 
 volatility_samples: false
 
