@@ -7,7 +7,7 @@ volatility_release: HEAD
 volatility_pip_pkg:
   - distorm3
 ## no libfuzzy package on centos?
-  - pyimpfuzzy
+#  - pyimpfuzzy
 
 volatility_samples: false
 
