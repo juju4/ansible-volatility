@@ -6,7 +6,8 @@ python_deps:
   - python-pip
   - gcc
   - libfuzzy-dev
-  - python-pil
+#  - python-pil
+  - python-imaging
 
 unrar_pkg: 'unrar-free'
 

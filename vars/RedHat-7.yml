@@ -5,7 +5,9 @@ python_deps:
   - python-devel
   - python-pip
   - gcc
-  - python-pil
+  - python-imaging
+## or?
+#  - python-pillow
 
 ## https://bugzilla.redhat.com/show_bug.cgi?id=593702
 #unrar_pkg: 'rar'

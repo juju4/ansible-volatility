@@ -5,7 +5,7 @@ python_deps:
   - python-devel
   - python-pip
   - gcc
-  - python-pil
+  - python-imaging
 
 unrar_pkg: 'p7zip'
 

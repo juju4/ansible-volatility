@@ -30,7 +30,7 @@
         name: "{{ item }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
-      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pillow' ] + volatility_pip_pkg }}"
+      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
 
     - name: install volatility - virtualenv
       pip:
