@@ -5,8 +5,10 @@ python_deps:
   - python-devel
   - python-pip
   - gcc
+  - python-pil
 
 ## https://bugzilla.redhat.com/show_bug.cgi?id=593702
 #unrar_pkg: 'rar'
 unrar_pkg: 'p7zip'
 
+vol_bin_path: "/usr/bin/vol.py"

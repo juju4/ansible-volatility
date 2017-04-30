@@ -8,12 +8,42 @@
     pip_url: https://github.com/volatilityfoundation/volatility/archive/{{ volatility_release }}.tar.gz
   when: volatility_release != 'HEAD'
 
-- name: install volatility pip dependencies
-  pip: name={{ item }} state=present
-  with_items: "{{ volatility_pip_pkg }}"
+- block:
+    - name: install volatility pip dependencies
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ volatility_pip_pkg }}"
 
-- name: install volatility
-  pip: name={{ pip_url }} state=present
+    - name: install volatility
+      pip:
+        name: "{{ pip_url }}"
+        state: present
+  when: volatility_virtualenv == ''
+- block:
+    - name: ensure virtualenv is present
+      package:
+        name: python-virtualenv
+        state: present
+    - name: install volatility pip dependencies - virtualenv
+      pip:
+        name: "{{ item }}"
+        state: present
+        virtualenv: "{{ volatility_virtualenv }}"
+      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pillow' ] + volatility_pip_pkg }}"
+
+    - name: install volatility - virtualenv
+      pip:
+        name: "{{ pip_url }}"
+        state: present
+        virtualenv: "{{ volatility_virtualenv }}"
+
+    - name: symlink volatility in usual path
+      file:
+        src: "{{ volatility_virtualenv }}/bin/vol.py"
+        dest: "{{ vol_bin_path }}"
+        state: link
+  when: volatility_virtualenv != ''
 
 - name: ensure git is present
   package: name=git state=present

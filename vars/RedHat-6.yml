@@ -5,6 +5,8 @@ python_deps:
   - python-devel
   - python-pip
   - gcc
+  - python-pil
 
 unrar_pkg: 'p7zip'
 
+vol_bin_path: "/usr/bin/vol.py"

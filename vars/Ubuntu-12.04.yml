@@ -6,6 +6,8 @@ python_deps:
   - python-pip
   - gcc
   - libfuzzy-dev
+  - python-pil
 
 unrar_pkg: 'unrar-free'
 
+vol_bin_path: "/usr/local/bin/vol.py"
