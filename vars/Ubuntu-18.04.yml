@@ -1,0 +1,14 @@
+---
+
+python_deps:
+  - python
+  - python-dev
+  - python-pip
+  - gcc
+  - libfuzzy-dev
+#  - python-pil
+  - python-imaging
+
+unrar_pkg: 'unrar-free'
+
+vol_bin_path: "/usr/local/bin/vol.py"
