@@ -25,6 +25,7 @@
        dest={{ volatility_installdir }}/volatilityplugins/elceef-bitlocker
 
 ## http://blog.jpcert.or.jp/2016/12/a-new-tool-to-d-d6bc.html
+## https://blog.jpcert.or.jp/2018/08/volatility-plugin-for-detecting-cobalt-strike-beacon.html
 - name: Artifact Analysis tool from JP-CERT
   git: repo=https://github.com/JPCERTCC/aa-tools.git
        dest={{ volatility_installdir }}/volatilityplugins/aa-tools
@@ -49,4 +50,14 @@
     dest: "{{ vol_plugins }}/autoruns.py"
     state: link
   when: vol_plugins is defined and not autoruns.stat.exists
+
+- stat: path="{{ vol_plugins }}/cobaltstrikescan.py"
+  register: cobalt
+  when: vol_plugins is defined
+- name: map cobaltstrikescan.py in volatility plugins tree
+  file:
+    src: "{{ volatility_installdir }}/volatilityplugins/aa-tools/cobaltstrikescan.py"
+    dest: "{{ vol_plugins }}/cobaltstrikescan.py"
+    state: link
+  when: vol_plugins is defined and not cobalt.stat.exists
 
