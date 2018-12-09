@@ -19,7 +19,7 @@
   copy:
     src: "{{ volatility_scan_orchestrator_src }}"
     dest: "{{ volatility_scan_remote_path }}"
-    remote_src: {{ volatility_scan_remote }}
+    remote_src: "{{ volatility_scan_remote }}"
   when: volatility_remote_src is defined and volatility_remote_src
 
 - name: uncompress file to analyze
