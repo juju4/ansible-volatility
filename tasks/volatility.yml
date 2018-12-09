@@ -45,7 +45,7 @@
         src: "{{ volatility_virtualenv }}/bin/vol.py"
         dest: "{{ vol_bin_path }}"
         state: link
-  when: volatility_virtualenv
+  when: volatility_virtualenv != ''
 
 - name: ensure git is present
   package: name=git state=present
