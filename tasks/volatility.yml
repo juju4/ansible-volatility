@@ -1,10 +1,12 @@
 ---
 
-- set_fact:
+- name: Set fact pip_url HEAD
+  set_fact:
     #pip_url: https://github.com/volatilityfoundation/volatility.git
     pip_url: https://github.com/volatilityfoundation/volatility/archive/master.tar.gz
   when: volatility_release == 'HEAD'
-- set_fact:
+- name: Set fact pip_url non-HEAD
+  set_fact:
     pip_url: https://github.com/volatilityfoundation/volatility/archive/{{ volatility_release }}.tar.gz
   when: volatility_release != 'HEAD'
 
@@ -19,7 +21,7 @@
       pip:
         name: "{{ pip_url }}"
         state: present
-  when: volatility_virtualenv == ''
+  when: not volatility_virtualenv
 - block:
     - name: ensure virtualenv is present
       package:
@@ -43,11 +45,12 @@
         src: "{{ volatility_virtualenv }}/bin/vol.py"
         dest: "{{ vol_bin_path }}"
         state: link
-  when: volatility_virtualenv != ''
+  when: volatility_virtualenv
 
 - name: ensure git is present
   package: name=git state=present
 - name: Volatility profiles
-  git: repo=https://github.com/volatilityfoundation/profiles.git
-       dest={{ volatility_installdir }}/profiles
-
+  git:
+    repo: https://github.com/volatilityfoundation/profiles.git
+    dest: "{{ volatility_installdir }}/profiles"
+    version: HEAD

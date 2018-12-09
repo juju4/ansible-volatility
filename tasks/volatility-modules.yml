@@ -60,4 +60,3 @@
     dest: "{{ vol_plugins }}/cobaltstrikescan.py"
     state: link
   when: vol_plugins is defined and not cobalt.stat.exists
-

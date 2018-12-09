@@ -6,9 +6,10 @@
 - file: dest={{ volatility_installdir }}/samples state=directory
 
 - name: Download memory samples
-  get_url: url={{ item }}
-    dest={{ volatility_installdir }}/samples
-    mode=0600
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ volatility_installdir }}/samples"
+    mode: '0600'
   with_items:
     - http://www.cfreds.nist.gov/mem/memory-images.rar
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
@@ -23,4 +24,3 @@
 
 - name: add unrar to unarchive
   package: name={{ unrar_pkg }} state=present
-

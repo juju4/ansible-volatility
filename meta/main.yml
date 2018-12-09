@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: volatility
   author: juju4
   description: Volatility, Volatile memory extraction utility framework
   license: BSD
@@ -27,4 +28,4 @@ galaxy_info:
   - system
   - security
 dependencies:
-  - juju4.redhat-epel
+  - juju4.redhat_epel
