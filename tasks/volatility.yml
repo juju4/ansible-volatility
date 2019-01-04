@@ -16,29 +16,39 @@
         name: "{{ item }}"
         state: present
       with_items: "{{ volatility_pip_pkg }}"
+      register: pkg_result
+      until: pkg_result is success
 
     - name: install volatility
       pip:
         name: "{{ pip_url }}"
         state: present
+      register: pkg_result
+      until: pkg_result is success
   when: not volatility_virtualenv
 - block:
     - name: ensure virtualenv is present
       package:
         name: python-virtualenv
         state: present
+      register: pkg_result
+      until: pkg_result is success
     - name: install volatility pip dependencies - virtualenv
       pip:
         name: "{{ item }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
       with_items: "{{ [ 'setuptools', 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
+      register: pkg_result
+      until: pkg_result is success
 
     - name: install volatility - virtualenv
       pip:
         name: "{{ pip_url }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
+      register: pkg_result
+      until: pkg_result is success
 
     - name: symlink volatility in usual path
       file:
@@ -49,6 +59,8 @@
 
 - name: ensure git is present
   package: name=git state=present
+  register: pkg_result
+  until: pkg_result is success
 - name: Volatility profiles
   git:
     repo: https://github.com/volatilityfoundation/profiles.git

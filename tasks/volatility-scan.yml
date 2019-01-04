@@ -5,6 +5,8 @@
 
 - name: ensure clamav is installed
   package: name=clamav state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: ensure target directories exist
   file: dest={{ item }} state=directory mode=0755

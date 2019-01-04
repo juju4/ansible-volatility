@@ -11,8 +11,9 @@
   when: ansible_os_family == "RedHat"
 
 - name: install python dependencies
-  package: name={{ item }} state=present
-  with_items: "{{ python_deps }}"
+  package: name={{ python_deps }} state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - include: volatility.yml
 - include: volatility-modules.yml

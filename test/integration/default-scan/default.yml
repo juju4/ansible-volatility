@@ -6,4 +6,3 @@
     - volatility_scan: true
   roles:
     - juju4.volatility
-
