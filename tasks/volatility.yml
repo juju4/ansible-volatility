@@ -55,7 +55,7 @@
         src: "{{ volatility_virtualenv }}/bin/vol.py"
         dest: "{{ vol_bin_path }}"
         state: link
-  when: volatility_virtualenv != ''
+  when: volatility_virtualenv
 
 - name: ensure git is present
   package: name=git state=present
@@ -65,4 +65,4 @@
   git:
     repo: https://github.com/volatilityfoundation/profiles.git
     dest: "{{ volatility_installdir }}/profiles"
-    version: HEAD
+    version: "{{ volatility_profiles_version | default('524a5340bbf48f4a6f48d344d2554fdf65f6c1d4') }}"

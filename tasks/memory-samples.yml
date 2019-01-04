@@ -3,7 +3,8 @@
 ## https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
 ## https://code.google.com/p/volatility/wiki/SampleMemoryImages
 
-- file: dest={{ volatility_installdir }}/samples state=directory
+- name: Ensure volatility samples directory exists
+  file: dest={{ volatility_installdir }}/samples state=directory
 
 - name: Download memory samples
   get_url:
@@ -24,3 +25,5 @@
 
 - name: add unrar to unarchive
   package: name={{ unrar_pkg }} state=present
+  register: pkg_result
+  until: pkg_result is success
