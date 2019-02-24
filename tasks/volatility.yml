@@ -13,9 +13,8 @@
 - block:
     - name: install volatility pip dependencies
       pip:
-        name: "{{ item }}"
+        name: "{{ volatility_pip_pkg }}"
         state: present
-      with_items: "{{ volatility_pip_pkg }}"
       register: pkg_result
       until: pkg_result is success
 
@@ -35,10 +34,9 @@
       until: pkg_result is success
     - name: install volatility pip dependencies - virtualenv
       pip:
-        name: "{{ item }}"
+        name: "{{ [ 'setuptools', 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
-      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
       register: pkg_result
       until: pkg_result is success
 
@@ -61,6 +59,7 @@
   package: name=git state=present
   register: pkg_result
   until: pkg_result is success
+
 - name: Volatility profiles
   git:
     repo: https://github.com/volatilityfoundation/profiles.git
