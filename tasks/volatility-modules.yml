@@ -1,34 +1,49 @@
 ---
 
 - name: ensure volatility plugins directory exists
-  file: dest={{ volatility_installdir }}/volatilityplugins mode=0755 state=directory
+  file:
+    dest: "{{ volatility_installdir }}/volatilityplugins"
+    mode: '0755'
+    state: directory
 
 ## most of https://github.com/sans-dfir/sift-files/tree/master/volatility should be here
 - name: Volatility plugins developed and maintained by the community
-  git: repo=https://github.com/volatilityfoundation/community.git
-       dest={{ volatility_installdir }}/volatilityplugins/community
+  git:
+    repo: https://github.com/volatilityfoundation/community.git
+    dest: "{{ volatility_installdir }}/volatilityplugins/community"
+    version: "{{ vol_volatilityplugins_version | default('e0a6dec5b1f5d829a806a3bc21e460523e73db81') }}"
 
 - name: editbox - extracts the text from Windows Edit controls
-  git: repo=https://github.com/bridgeythegeek/editbox.git
-       dest={{ volatility_installdir }}/volatilityplugins/editbox
+  git:
+    repo: https://github.com/bridgeythegeek/editbox.git
+    dest: "{{ volatility_installdir }}/volatilityplugins/editbox"
+    version: "{{ vol_editbox_version | default('0baed53c37eb6d3822dd50fc29078c908a20054e') }}"
 
 - name: malware config extractor - plugx, andromeda
-  git: repo=https://github.com/arbor-jjones/volatility_plugins.git
-       dest={{ volatility_installdir }}/volatilityplugins/plugx+andromeda
+  git:
+    repo: https://github.com/arbor-jjones/volatility_plugins.git
+    dest: "{{ volatility_installdir }}/volatilityplugins/plugx+andromeda"
+    version: "{{ vol_plugxand_version | default('0399a57480ad8a1968465647ebb47c1b740abf35') }}"
 
 - name: autoruns
-  git: repo=https://github.com/tomchop/volatility-autoruns
-       dest={{ volatility_installdir }}/volatilityplugins/volatility-autoruns
+  git:
+    repo: https://github.com/tomchop/volatility-autoruns
+    dest: "{{ volatility_installdir }}/volatilityplugins/volatility-autoruns"
+    version: "{{ vol_autoruns_version | default('a39efc8848ca8f642cc58f16aa04c71244b31880') }}"
 
 - name: bitlocker keys retrieving
-  git: repo=https://github.com/elceef/bitlocker
-       dest={{ volatility_installdir }}/volatilityplugins/elceef-bitlocker
+  git:
+    repo: https://github.com/elceef/bitlocker
+    dest: "{{ volatility_installdir }}/volatilityplugins/elceef-bitlocker"
+    version: "{{ vol_bitlocker_version | default('d1c1790045ea935678bafb5f2f933a884120429f') }}"
 
 ## http://blog.jpcert.or.jp/2016/12/a-new-tool-to-d-d6bc.html
 ## https://blog.jpcert.or.jp/2018/08/volatility-plugin-for-detecting-cobalt-strike-beacon.html
 - name: Artifact Analysis tool from JP-CERT
-  git: repo=https://github.com/JPCERTCC/aa-tools.git
-       dest={{ volatility_installdir }}/volatilityplugins/aa-tools
+  git:
+    repo: https://github.com/JPCERTCC/aa-tools.git
+    dest: "{{ volatility_installdir }}/volatilityplugins/aa-tools"
+    version: "{{ vol_aatools_version | default('2cbac3cb63346f07751dd6a44643306ac619fe6a') }}"
 
 - name: Check volatility plugins directory 1
   stat: path=/usr/lib/python2.7/dist-packages/volatility/plugins
@@ -56,7 +71,8 @@
     state: link
   when: vol_plugins is defined and not autoruns.stat.exists
 
-- stat: path="{{ vol_plugins }}/cobaltstrikescan.py"
+- name: Check if cobaltstrikescan plugin is present
+  stat: path="{{ vol_plugins }}/cobaltstrikescan.py"
   register: cobalt
   when: vol_plugins is defined
 - name: map cobaltstrikescan.py in volatility plugins tree
