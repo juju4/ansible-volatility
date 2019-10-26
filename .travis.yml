@@ -28,17 +28,6 @@ env:
     init: /sbin/init
     run_opts: ""
     suite: default
-#  - distribution: ubuntu
-#    version: 12.04
-#    init: /sbin/init
-#    run_opts: ""
-#  - distribution: alpine
-#    version: 3.4
-#    init: /sbin/init
-#    run_opts: ""
-#  - distro: debian8
-#    init: /lib/systemd/systemd
-#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
   - distribution: centos
     version: 8
     init: /usr/lib/systemd/systemd
@@ -54,7 +43,6 @@ services:
   - docker
 
 before_install:
-  # - sudo apt-get update
   # Pull container
   - 'sudo docker pull ${distribution}:${version}'
   - env
@@ -96,7 +84,6 @@ after_failure:
 
 after_script:
   - 'docker exec "$(cat ${container_id})" vol.py --version'
-  - 'docker exec "$(cat ${container_id})" vol.py -v'
   - 'docker exec "$(cat ${container_id})" vol.py -h'
   # Clean up
   - 'sudo docker stop "$(cat ${container_id})"'
