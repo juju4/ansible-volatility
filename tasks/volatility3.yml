@@ -11,14 +11,14 @@
   when: volatility_release != 'HEAD'
 
 - block:
-    - name: install volatility pip dependencies
+    - name: install volatility3 pip dependencies
       pip:
         name: "{{ volatility3_pip_pkg }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility
+    - name: install volatility3
       pip:
         name: "{{ pip_url }}"
         state: present
@@ -33,7 +33,7 @@
         state: present
       register: pkg_result
       until: pkg_result is success
-    - name: install volatility pip dependencies - virtualenv
+    - name: install volatility3 pip dependencies - virtualenv
       pip:
         name: "{{ [ 'setuptools', 'pip' ] + volatility3_pip_pkg }}"
         state: present
@@ -42,7 +42,7 @@
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility - virtualenv
+    - name: install volatility3 - virtualenv
       pip:
         name: "{{ pip_url }}"
         state: present
@@ -62,9 +62,3 @@
   package: name=git state=present
   register: pkg_result
   until: pkg_result is success
-
-- name: Volatility profiles
-  git:
-    repo: https://github.com/volatilityfoundation/profiles.git
-    dest: "{{ volatility_installdir }}/profiles"
-    version: "{{ volatility_profiles_version | default('524a5340bbf48f4a6f48d344d2554fdf65f6c1d4') }}"
