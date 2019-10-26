@@ -1,14 +1,15 @@
 ---
 
 python_deps:
-  - python
-  - python-dev
+  - python3
   - python3-dev
-  - python-pip
+  - python3-pip
   - gcc
   - libfuzzy-dev
-#  - python-pil
-  - python-imaging
+  - python3-pil
+
+python_bin: python3
+pip_bin: pip3
 
 unrar_pkg: 'unrar-free'
 

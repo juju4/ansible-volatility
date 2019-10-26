@@ -1,11 +1,14 @@
 ---
 
 python_deps:
-  - python
-  - python-devel
-  - python-pip
+  - python36
+  - python36-devel
+  - python3-pip
   - gcc
-  - python-imaging
+  - python3-pillow
+
+python_bin: python3
+pip_bin: pip3
 
 unrar_pkg: 'p7zip'
 

@@ -76,6 +76,7 @@ script:
 
 after_failure:
   - 'docker exec "$(cat ${container_id})" journalctl -xe --no-pager'
+  - 'docker exec "$(cat ${container_id})" ls -l /usr/bin /usr/local/bin | egrep "(python|pip)"'
 
 after_script:
   - 'docker exec "$(cat ${container_id})" vol.py --version'
