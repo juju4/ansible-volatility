@@ -15,3 +15,7 @@ pip_bin: pip3
 unrar_pkg: 'p7zip'
 
 vol_bin_path: "/usr/bin/vol.py"
+
+volatility3_pip_pkg:
+  - pefile
+  - yara-python

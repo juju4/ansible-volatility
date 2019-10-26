@@ -1,0 +1,8 @@
+---
+
+- hosts: all
+  vars:
+    - volatility3beta_enable: true
+    - volatility_samples: true
+  roles:
+    - juju4.volatility

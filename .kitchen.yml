@@ -36,3 +36,6 @@ suites:
   - name: default-scan
     run_list:
     attributes:
+  - name: default-v3
+    run_list:
+    attributes:

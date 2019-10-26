@@ -7,22 +7,27 @@ env:
     version: 8
     init: /usr/lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
   - distribution: ubuntu
     version: 18.04
     init: /lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
   - distribution: ubuntu
     version: 16.04
     init: /lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default
   - distribution: ubuntu
     version: 14.04
     init: /sbin/init
     run_opts: ""
+    suite: default
 #  - distribution: ubuntu
 #    version: 12.04
 #    init: /sbin/init
@@ -34,6 +39,11 @@ env:
 #  - distro: debian8
 #    init: /lib/systemd/systemd
 #    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: ubuntu
+    version: 18.04
+    init: /lib/systemd/systemd
+    run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
+    suite: default-v3
 
 services:
   - docker
@@ -58,21 +68,21 @@ script:
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible --version'
 
   # Ansible syntax check.
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/default/default.yml --syntax-check'
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/${suite}/default.yml --syntax-check'
 
   # Test role.
-  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/default/default.yml -v'
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/${suite}/default.yml -v'
 
   # Test role idempotence.
   - >
-    sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/default/default.yml
+    sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.volatility/test/integration/${suite}/default.yml
     | tee /tmp/idempotency.log
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)
 
   # serverspec tests
-#  - 'sudo docker exec --tty "$(cat ${container_id})" /etc/ansible/roles/juju4.volatility/test/integration/default/serverspec/run-local-tests.sh'
+#  - 'sudo docker exec --tty "$(cat ${container_id})" /etc/ansible/roles/juju4.volatility/test/integration/${suite}/serverspec/run-local-tests.sh'
 
 after_failure:
   - 'docker exec "$(cat ${container_id})" journalctl -xe --no-pager'

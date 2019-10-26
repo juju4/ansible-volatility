@@ -16,6 +16,9 @@
   until: pkg_result is success
 
 - include: volatility.yml
+  when: not volatility3beta_enable
+- include: volatility3.yml
+  when: volatility3beta_enable
 - include: volatility-modules.yml
 #- include: volatility-win10.yml
 
