@@ -1,0 +1,12 @@
+---
+
+python_deps:
+  - python
+  - python-devel
+  - python-pip
+  - gcc
+  - python-imaging
+
+unrar_pkg: 'p7zip'
+
+vol_bin_path: "/usr/bin/vol.py"
