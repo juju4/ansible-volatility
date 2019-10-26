@@ -53,7 +53,7 @@
 
     - name: symlink volatility in usual path
       file:
-        src: "{{ volatility_virtualenv }}/bin/vol.py"
+        src: "{{ volatility_virtualenv }}/bin/vol"
         dest: "{{ vol_bin_path }}"
         state: link
   when: volatility_virtualenv != ''
