@@ -20,7 +20,7 @@
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
 
 - name: install python dependencies
-  package: name={{ python_deps2 }} state=present
+  package: name={{ python2_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 
