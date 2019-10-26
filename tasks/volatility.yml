@@ -29,7 +29,7 @@
 - block:
     - name: ensure virtualenv is present
       package:
-        name: python-virtualenv
+        name: "{{ python_virtualenv_pkg | default('python-virtualenv' }}"
         state: present
       register: pkg_result
       until: pkg_result is success
