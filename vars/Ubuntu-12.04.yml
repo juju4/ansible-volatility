@@ -1,6 +1,6 @@
 ---
 
-python_deps:
+python2_deps:
   - python
   - python-dev
   - python-pip
