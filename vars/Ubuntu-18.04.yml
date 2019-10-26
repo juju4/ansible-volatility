@@ -1,5 +1,13 @@
 ---
 
+python2_deps:
+  - python
+  - python-dev
+  - python-pip
+  - gcc
+  - libfuzzy-dev
+  - python-pil
+
 python_deps:
   - python3
   - python3-dev

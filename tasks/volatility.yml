@@ -9,6 +9,20 @@
   set_fact:
     pip_url: https://github.com/volatilityfoundation/volatility/archive/{{ volatility_release }}.tar.gz
   when: volatility_release != 'HEAD'
+- name: Enforce python2
+  set_fact:
+    python_bin: python
+    pip_bin: pip
+- name: RedHat 8 | Enforce python2
+  set_fact:
+    python_bin: python2
+    pip_bin: pip2
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
+
+- name: install python dependencies
+  package: name={{ python_deps2 }} state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - block:
     - name: install volatility pip dependencies

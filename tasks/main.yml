@@ -10,11 +10,6 @@
   include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_os_family == "RedHat"
 
-- name: install python dependencies
-  package: name={{ python_deps }} state=present
-  register: pkg_result
-  until: pkg_result is success
-
 - include: volatility.yml
   when: not volatility3beta_enable
 - include: volatility3.yml

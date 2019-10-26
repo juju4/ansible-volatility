@@ -1,5 +1,12 @@
 ---
 
+python2_deps:
+  - python
+  - python-devel
+  - python-pip
+  - gcc
+  - python-pillow
+
 python_deps:
   - python3
   - python3-devel

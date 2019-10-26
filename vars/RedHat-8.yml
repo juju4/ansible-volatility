@@ -1,5 +1,11 @@
 ---
 
+python2_deps:
+  - python2
+  - python2-devel
+  - python2-pip
+  - gcc
+
 python_deps:
   - python36
   - python36-devel
