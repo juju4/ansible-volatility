@@ -12,7 +12,7 @@
     dest: "{{ volatility_installdir }}/samples"
     mode: '0600'
   with_items:
-    - http://www.cfreds.nist.gov/mem/memory-images.rar
+#    - http://www.cfreds.nist.gov/mem/memory-images.rar
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/1/zeus.vmem.zip
 #    - http://www.mediafire.com/file/yxqodp1p2aca91x/0zapftis.rar
 #    - http://malwarecookbook.googlecode.com/svn-history/r26/trunk/17/11/sality.vmem.zip
