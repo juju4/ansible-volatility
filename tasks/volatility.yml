@@ -25,6 +25,14 @@
   until: pkg_result is success
 
 - block:
+    - name: install setuptools pip dependencies - python2
+      pip:
+        name: setuptools
+        version: 44.0.0
+        state: present
+      register: pkg_result
+      until: pkg_result is success
+
     - name: install volatility pip dependencies
       pip:
         name: "{{ volatility_pip_pkg }}"
@@ -47,9 +55,20 @@
         state: present
       register: pkg_result
       until: pkg_result is success
+
+    - name: install setuptools pip dependencies - python2 - virtualenv
+      pip:
+        name: setuptools
+        version: 44.0.0
+        state: present
+        virtualenv: "{{ volatility_virtualenv }}"
+        virtualenv_python: "{{ python_bin | default('python') }}"
+      register: pkg_result
+      until: pkg_result is success
+
     - name: install volatility pip dependencies - virtualenv
       pip:
-        name: "{{ [ 'setuptools', 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
+        name: "{{ [ 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
