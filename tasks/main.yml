@@ -11,9 +11,13 @@
   when: ansible_os_family == "RedHat"
 
 - include: volatility.yml
-  when: not volatility3beta_enable
+  when: >
+    not volatility3beta_enable and
+    not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
 - include: volatility3.yml
-  when: volatility3beta_enable
+  when: >
+    volatility3beta_enable or
+    (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
 - include: volatility-modules.yml
 #- include: volatility-win10.yml
 
