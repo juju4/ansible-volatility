@@ -75,6 +75,18 @@
       register: pkg_result
       until: pkg_result is success
 
+    # 3.5.0: error: ‘for’ loop initial declarations are only allowed in C99 mode
+    - name: Centos7 | force distorm3 3.4.4 - virtualenv
+      pip:
+        name: distorm3
+        version: 3.4.4
+        state: present
+        virtualenv: "{{ volatility_virtualenv }}"
+        virtualenv_python: "{{ python_bin | default('python') }}"
+      register: pkg_result
+      until: pkg_result is success
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
+
     - name: install volatility - virtualenv
       pip:
         name: "{{ pip_url }}"
