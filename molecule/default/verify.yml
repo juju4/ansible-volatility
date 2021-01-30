@@ -2,7 +2,7 @@
 
 - name: Verify
   hosts: vol
-  vars:
+  pre_tasks:
     - name: Debian | set fact
       set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
