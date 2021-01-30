@@ -21,6 +21,7 @@
   copy:
     src: "{{ volatility_scan_orchestrator_src }}"
     dest: "{{ volatility_scan_remote_path }}"
+    mode: '0600'
     remote_src: "{{ volatility_scan_remote }}"
   when: volatility_remote_src is defined and volatility_remote_src
 
@@ -36,9 +37,9 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} psxview |
-        tee {{ volatility_scan_outdir }}/psxview.txt
+        tee {{ volatility_scan_outdir }}/psxview.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/psxview.txt"
+    creates: "{{ volatility_scan_outdir }}/psxview.txt"
     executable: /bin/bash
 
 - name: execute volatility dlllist
@@ -46,55 +47,55 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} dlllist |
-        tee {{ volatility_scan_outdir }}/dlllist.txt
+        tee {{ volatility_scan_outdir }}/dlllist.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/dlllist.txt"
+    creates: "{{ volatility_scan_outdir }}/dlllist.txt"
     executable: /bin/bash
 
 - name: execute volatility dlldump
   shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
-        --profile={{ volatility_scan_profile }} dlldump —memory -D {{ volatility_scan_outdir }}/dlldump |
-        tee {{ volatility_scan_outdir }}/dlldump.txt
+        --profile={{ volatility_scan_profile }} dlldump —memory -D {{ volatility_scan_outdir }}/dlldump |
+        tee {{ volatility_scan_outdir }}/dlldump.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/dlldump.txt"
+    creates: "{{ volatility_scan_outdir }}/dlldump.txt"
     executable: /bin/bash
 
 - name: execute volatility malfind
   shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
-        --profile={{ volatility_scan_profile }} malfind -D {{ volatility_scan_outdir }}/malfind |
-        tee {{ volatility_scan_outdir }}/malfind.txt
+        --profile={{ volatility_scan_profile }} malfind -D {{ volatility_scan_outdir }}/malfind |
+        tee {{ volatility_scan_outdir }}/malfind.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/malfind.txt"
+    creates: "{{ volatility_scan_outdir }}/malfind.txt"
     executable: /bin/bash
 
 - name: execute volatility moddump
   shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
-        --profile={{ volatility_scan_profile }} moddump —memory -D {{ volatility_scan_outdir }}/moddump |
-        tee {{ volatility_scan_outdir }}/moddump.txt
+        --profile={{ volatility_scan_profile }} moddump —memory -D {{ volatility_scan_outdir }}/moddump |
+        tee {{ volatility_scan_outdir }}/moddump.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/moddump.txt"
+    creates: "{{ volatility_scan_outdir }}/moddump.txt"
     executable: /bin/bash
 
 - name: check file types of volatility output
   shell: |
     set -o pipefail
-    file {{ volatility_scan_outdir }}/* | egrep -i '(PE32 executable|UPX compressed|data)' |
-        tee {{ volatility_scan_outdir }}/file.txt
+    file {{ volatility_scan_outdir }}/* | egrep -i '(PE32 executable|UPX compressed|data)' |
+        tee {{ volatility_scan_outdir }}/file.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/file.txt"
+    creates: "{{ volatility_scan_outdir }}/file.txt"
     executable: /bin/bash
 
 - name: execute clamscan on extracted file
   command: >
-    clamscan -ir -l {{ volatility_scan_outdir }}/clamscan.txt {{ volatility_scan_outdir }}/
+    clamscan -ir -l {{ volatility_scan_outdir }}/clamscan.txt {{ volatility_scan_outdir }}/
   args:
-    creates: "{{ volatility_scan_outdir }}/clamscan.txt"
+    creates: "{{ volatility_scan_outdir }}/clamscan.txt"
   ignore_errors: true
 
 - name: execute volatility netscan
@@ -102,9 +103,9 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} netscan |
-        tee {{ volatility_scan_outdir }}/netscan.txt
+        tee {{ volatility_scan_outdir }}/netscan.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/netscan.txt"
+    creates: "{{ volatility_scan_outdir }}/netscan.txt"
     executable: /bin/bash
 
 - name: execute volatility ssdt
@@ -112,12 +113,12 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} ssdt |
-        tee {{ volatility_scan_outdir }}/ssdt.txt
+        tee {{ volatility_scan_outdir }}/ssdt.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/ssdt.txt"
+    creates: "{{ volatility_scan_outdir }}/ssdt.txt"
     executable: /bin/bash
 - name: match ntosk|win32k
-  command: "egrep -v '(ntosk|win32k)' {{ volatility_scan_outdir }}/ssdt.txt"
+  command: "egrep -v '(ntosk|win32k)' {{ volatility_scan_outdir }}/ssdt.txt"
   changed_when: false
   ignore_errors: true
 
@@ -126,10 +127,10 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} usnparser --output=csv
-        --output-file={{ volatility_scan_outdir }}/usn.csv -CS |
-        tee {{ volatility_scan_outdir }}/usnparser.txt
+        --output-file={{ volatility_scan_outdir }}/usn.csv -CS |
+        tee {{ volatility_scan_outdir }}/usnparser.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/usnparser.txt"
+    creates: "{{ volatility_scan_outdir }}/usnparser.txt"
     executable: /bin/bash
 
 - name: execute volatility autoruns
@@ -137,19 +138,19 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} autoruns -t autoruns |
-        tee {{ volatility_scan_outdir }}/autoruns.txt
+        tee {{ volatility_scan_outdir }}/autoruns.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/autoruns.txt"
+    creates: "{{ volatility_scan_outdir }}/autoruns.txt"
     executable: /bin/bash
 
 - name: execute volatility ethscan (pcap recovery)
   shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
-        --profile={{ volatility_scan_profile }} ethscan --save-pcap={{ volatility_scan_outdir }}/out.pcap |
-        tee {{ volatility_scan_outdir }}/ethscan.txt
+        --profile={{ volatility_scan_profile }} ethscan --save-pcap={{ volatility_scan_outdir }}/out.pcap |
+        tee {{ volatility_scan_outdir }}/ethscan.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/ethscan.txt"
+    creates: "{{ volatility_scan_outdir }}/ethscan.txt"
     executable: /bin/bash
 
 - name: execute volatility netscan (vista+)
@@ -157,9 +158,9 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} netscan |
-        tee {{ volatility_scan_outdir }}/netscan.txt
+        tee {{ volatility_scan_outdir }}/netscan.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/netscan.txt"
+    creates: "{{ volatility_scan_outdir }}/netscan.txt"
     executable: /bin/bash
 
 - name: execute volatility mimikatz
@@ -167,9 +168,9 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} mimikatz |
-        tee {{ volatility_scan_outdir }}/mimikatz.txt
+        tee {{ volatility_scan_outdir }}/mimikatz.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/mimikatz.txt"
+    creates: "{{ volatility_scan_outdir }}/mimikatz.txt"
     executable: /bin/bash
 
 - name: execute volatility firefoxhistory
@@ -177,10 +178,10 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} firefoxhistory --output=csv
-        --output-file={{ volatility_scan_outdir }}/firefox.csv |
-        tee {{ volatility_scan_outdir }}/firefoxhistory.txt
+        --output-file={{ volatility_scan_outdir }}/firefox.csv |
+        tee {{ volatility_scan_outdir }}/firefoxhistory.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/firefoxhistory.txt"
+    creates: "{{ volatility_scan_outdir }}/firefoxhistory.txt"
     executable: /bin/bash
 
 - name: execute volatility consoles
@@ -188,9 +189,9 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} consoles |
-        tee {{ volatility_scan_outdir }}/consoles.txt
+        tee {{ volatility_scan_outdir }}/consoles.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/consoles.txt"
+    creates: "{{ volatility_scan_outdir }}/consoles.txt"
     executable: /bin/bash
 
 - name: execute volatility cmdscan
@@ -198,17 +199,17 @@
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
         --profile={{ volatility_scan_profile }} cmdscan |
-        tee {{ volatility_scan_outdir }}/cmdscan.txt
+        tee {{ volatility_scan_outdir }}/cmdscan.txt
   args:
-    creates: "{{ volatility_scan_outdir }}/cmdscan.txt"
+    creates: "{{ volatility_scan_outdir }}/cmdscan.txt"
     executable: /bin/bash
 
 - name: check results
   command: "{{ item }}"
   with_items:
-    - "ls -lh {{ volatility_scan_outdir }}"
-    - "cat {{ volatility_scan_outdir }}/psxview.txt"
-    - "cat {{ volatility_scan_outdir }}/clamscan.txt"
+    - "ls -lh {{ volatility_scan_outdir }}"
+    - "cat {{ volatility_scan_outdir }}/psxview.txt"
+    - "cat {{ volatility_scan_outdir }}/clamscan.txt"
   changed_when: false
   register: out
 - debug: var=out
@@ -217,11 +218,10 @@
 
 - block:
     - name: archive output content
-## v2.2 archive: "src={{ volatility_scan_outdir }} dest=/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
-      command: >
-        tar czf /tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz {{ volatility_scan_outdir }}/
-      args:
-        creates: "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
+      archive:
+        src: "{{ volatility_scan_outdir }}"
+        dest: "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
+        mode: '0600'
     - name: retrieve output dir to orchestrator
       fetch: "src={{ item }} dest={{ volatility_scan_pulldir }}/"
       with_items:

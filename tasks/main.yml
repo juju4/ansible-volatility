@@ -1,7 +1,7 @@
 ---
 
-#- fail: msg="This role is only compatible with Ubuntu"
-#  when: ansible_distribution != 'Ubuntu'
+# - fail: msg="This role is only compatible with Ubuntu"
+#   when: ansible_distribution != 'Ubuntu'
 
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
@@ -19,7 +19,7 @@
     volatility3beta_enable or
     (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
 - include: volatility-modules.yml
-#- include: volatility-win10.yml
+# - include: volatility-win10.yml
 
 - include: memory-samples.yml
   when: volatility_samples is defined and volatility_samples

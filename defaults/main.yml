@@ -2,16 +2,16 @@
 
 volatility_installdir: /usr/local/share/volatility
 volatility_release: HEAD
-#volatility_release: 2.5
+# volatility_release: 2.5
 volatility3beta_enable: false
 
 ## if empty, will install global
-#volatility_virtualenv: ''
+# volatility_virtualenv: ''
 volatility_virtualenv: '/usr/local/env-volatility'
 volatility_pip_pkg:
   - distorm3
-## no libfuzzy package on centos?
-#  - pyimpfuzzy
+  ## no libfuzzy package on centos?
+  # - pyimpfuzzy
 
 volatility_samples: false
 

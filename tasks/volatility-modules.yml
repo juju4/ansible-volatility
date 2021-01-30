@@ -68,6 +68,7 @@
   file:
     src: "{{ volatility_installdir }}/volatilityplugins/volatility-autoruns/autoruns.py"
     dest: "{{ vol_plugins }}/autoruns.py"
+    mode: '0644'
     state: link
   when: vol_plugins is defined and not autoruns.stat.exists
 
@@ -79,5 +80,6 @@
   file:
     src: "{{ volatility_installdir }}/volatilityplugins/aa-tools/cobaltstrikescan.py"
     dest: "{{ vol_plugins }}/cobaltstrikescan.py"
+    mode: '0644'
     state: link
   when: vol_plugins is defined and not cobalt.stat.exists

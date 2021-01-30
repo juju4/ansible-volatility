@@ -18,7 +18,7 @@ python_bin: python3
 pip_bin: pip3
 
 ## https://bugzilla.redhat.com/show_bug.cgi?id=593702
-#unrar_pkg: 'rar'
+# unrar_pkg: 'rar'
 unrar_pkg: 'p7zip'
 
 vol_bin_path: "/usr/bin/vol.py"
