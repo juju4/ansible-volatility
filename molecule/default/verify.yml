@@ -27,14 +27,14 @@
       register: volpy
     - name: Validate vol.py present
       assert:
-        that: volpy.stat.exists and volpy.stat.size != 0 and volpy.mode == '0755'
+        that: volpy.stat.exists and volpy.stat.size != 0 and volpy.stat.mode == '0755'
     - name: Ensure volatility profile directory exists
       stat:
         path: "{{ vol_profiles_filepath }}"
       register: prof
     - name: Validate volatility profile directory present
       assert:
-        that: prof.stat.exists and prof.mode == '0755'
+        that: prof.stat.exists and prof.stat.mode == '0755'
       when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
 
     - name: Ensure vol.py working
