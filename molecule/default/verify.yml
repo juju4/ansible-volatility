@@ -30,7 +30,7 @@
         that:
           - volpy.stat.exists
           - volpy.stat.size != 0
-          - volpy.islnk
+          - volpy.stat.islnk
           - volpy.stat.lnk_target == '/usr/local/env-volatility/bin/vol'
     - name: Ensure volatility profile directory exists
       stat:
