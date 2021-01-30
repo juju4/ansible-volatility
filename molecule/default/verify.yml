@@ -6,18 +6,21 @@
     - name: Debian | set fact
       set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
+        vol_py_lnk: /usr/local/env-volatility/bin/vol.py
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
       when: ansible_os_family == 'Debian'
     - name: RedHat | set fact
       set_fact:
         vol_py_filepath: /usr/bin/vol.py
+        vol_py_lnk: /usr/local/env-volatility/bin/vol.py
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
       when: ansible_os_family == "RedHat"
     - name: Volatility3 | set fact
       set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
+        vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_h: 'Volatility 3 Framework'
       when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
   tasks:
@@ -31,7 +34,7 @@
           - volpy.stat.exists
           - volpy.stat.size != 0
           - volpy.stat.islnk
-          - volpy.stat.lnk_target == '/usr/local/env-volatility/bin/vol'
+          - volpy.stat.lnk_target == vol_py_lnk
     - name: Ensure volatility profile directory exists
       stat:
         path: "{{ vol_profiles_filepath }}"
