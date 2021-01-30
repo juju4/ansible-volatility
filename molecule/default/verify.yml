@@ -27,7 +27,11 @@
       register: volpy
     - name: Validate vol.py present
       assert:
-        that: volpy.stat.exists and volpy.stat.size != 0 and volpy.stat.mode == '0755'
+        that:
+          - volpy.stat.exists
+          - volpy.stat.size != 0
+          - volpy.islnk
+          - volpy.stat.lnk_target == '/usr/local/env-volatility/bin/vol'
     - name: Ensure volatility profile directory exists
       stat:
         path: "{{ vol_profiles_filepath }}"
