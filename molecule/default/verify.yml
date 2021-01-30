@@ -1,0 +1,47 @@
+---
+
+- name: Verify
+  hosts: vol
+  vars:
+    - name: Debian | set fact
+      set_fact:
+        vol_py_filepath: /usr/local/bin/vol.py
+        vol_profiles_filepath: /usr/local/share/volatility/profiles
+        vol_h: 'Usage: Volatility'
+      when: ansible_os_family == 'Debian'
+    - name: RedHat | set fact
+      set_fact:
+        vol_py_filepath: /usr/bin/vol.py
+        vol_profiles_filepath: /usr/local/share/volatility/profiles
+        vol_h: 'Usage: Volatility'
+      when: ansible_os_family == "RedHat"
+    - name: Volatility3 | set fact
+      set_fact:
+        vol_py_filepath: /usr/local/bin/vol.py
+        vol_h: 'Volatility 3 Framework'
+      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
+  tasks:
+    - name: Ensure vol.py file exists
+      stat:
+        path: "{{ vol_py_filepath }}"
+      register: volpy
+    - name: Validate vol.py present
+      assert:
+        that: volpy.stat.exists and volpy.stat.size != 0 and volpy.mode == '0755'
+    - name: Ensure volatility profile directory exists
+      stat:
+        path: "{{ vol_profiles_filepath }}"
+      register: prof
+    - name: Validate volatility profile directory present
+      assert:
+        that: prof.stat.exists and prof.mode == '0755'
+      when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
+
+    - name: Ensure vol.py working
+      command: vol.py -h
+      register: ps
+      changed_when: false
+      ignore_errors: true
+    - name: Validate vol.py output
+      assert:
+        that: ps.stdout and vol_h in ps.stdout
