@@ -10,7 +10,7 @@
     pip_url: volatility3
   when: volatility_release != 'HEAD'
 
-- name: install python dependencies
+- name: install git and python dependencies
   package: name={{ python_deps }} state=present
   register: pkg_result
   until: pkg_result is success

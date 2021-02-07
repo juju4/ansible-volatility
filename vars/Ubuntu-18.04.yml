@@ -9,6 +9,7 @@ python2_deps:
   - python-pil
 
 python_deps:
+  - git
   - python3
   - python3-dev
   - python3-pip
