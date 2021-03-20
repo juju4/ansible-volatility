@@ -212,7 +212,8 @@
     - "cat {{ volatility_scan_outdir }}/clamscan.txt"
   changed_when: false
   register: out
-- debug: var=out
+- name: Debug | results output
+  debug: var=out
 
 ## wipe ? encrypt/sign archive? do on trusted computer anyway.
 
