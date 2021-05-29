@@ -30,4 +30,3 @@ describe command('vol.py -h'), :if => os[:release] == '20.04' do
   its(:stdout) { should match /usage: volatility / }
   its(:exit_status) { should eq 0 }
 end
-

@@ -21,4 +21,3 @@ describe command('vol.py -h') do
   its(:stdout) { should match /usage: volatility / }
   its(:exit_status) { should eq 0 }
 end
-
