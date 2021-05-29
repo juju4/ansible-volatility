@@ -62,6 +62,12 @@
         dest: "{{ vol_bin_path }}"
         mode: '0755'
         state: link
+
+    - name: Ensure symbols directory writable by all users
+      file:
+        path: "{{ volatility_virtualenv }}/lib/python3.8/site-packages/volatility3/symbols/windows"
+        state: directory
+        mode: '1777'
   when: volatility_virtualenv|string
 
 - name: ensure git is present

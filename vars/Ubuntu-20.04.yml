@@ -29,3 +29,4 @@ vol_bin_path: "/usr/local/bin/vol.py"
 volatility3_pip_pkg:
   - pefile
   - yara-python
+  - capstone
