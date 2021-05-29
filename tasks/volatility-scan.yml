@@ -96,7 +96,7 @@
     clamscan -ir -l {{ volatility_scan_outdir }}/clamscan.txt {{ volatility_scan_outdir }}/
   args:
     creates: "{{ volatility_scan_outdir }}/clamscan.txt"
-  ignore_errors: true
+  failed_when: false
 
 - name: execute volatility netscan
   shell: |
@@ -120,7 +120,7 @@
 - name: match ntosk|win32k
   command: "egrep -v '(ntosk|win32k)' {{ volatility_scan_outdir }}/ssdt.txt"
   changed_when: false
-  ignore_errors: true
+  failed_when: false
 
 - name: execute volatility usnparser
   shell: |

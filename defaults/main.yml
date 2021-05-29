@@ -5,8 +5,8 @@ volatility_release: HEAD
 # volatility_release: 2.5
 volatility_target: '3'
 volatility_python: '3'
-#volatility_target: '2'
-#volatility_python: '3' or '2'
+# volatility_target: '2'
+# volatility_python: '3' or '2'
 
 ## if empty, will install global
 # volatility_virtualenv: ''
