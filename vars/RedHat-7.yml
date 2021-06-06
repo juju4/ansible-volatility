@@ -13,6 +13,7 @@ python_deps:
   - python3-pip
   - gcc
   - python-pillow
+  - git
 
 python_bin: python3
 pip_bin: pip3

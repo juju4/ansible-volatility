@@ -12,6 +12,7 @@ python_deps:
   - python3-pip
   - gcc
   - python3-pillow
+  - git
 
 python_virtualenv_pkg: python3-virtualenv
 
