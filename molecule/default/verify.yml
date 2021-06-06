@@ -42,7 +42,9 @@
     - name: Validate volatility profile directory present
       assert:
         that: prof.stat.exists and prof.stat.mode == '0755'
-      when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18)
+      when: >
+        not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) and
+        not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
 
     - name: Ensure vol.py working
       command: vol.py -h
