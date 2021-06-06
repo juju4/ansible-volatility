@@ -54,3 +54,5 @@
     - name: Validate vol.py output
       assert:
         that: ps.stdout and vol_h in ps.stdout
+      when: >
+        not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
