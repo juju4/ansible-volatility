@@ -8,7 +8,7 @@ volatility_python: '3'
 # volatility_target: '2'
 # volatility_python: '3' or '2'
 
-vol3_autoruns_version: 'a39efc8848ca8f642cc58f16aa04c71244b31880'
+vol3_autoruns_version: '66806613427943fb3207ad62cb053fc21dbaf6fb'
 
 ## if empty, will install global
 # volatility_virtualenv: ''
