@@ -114,3 +114,5 @@
     repo: https://github.com/volatilityfoundation/profiles.git
     dest: "{{ volatility_installdir }}/profiles"
     version: "{{ volatility_profiles_version | default('1c6bde858855c6ac6a3a0691ece3af65afb877e6') }}"
+
+- include: volatility-modules.yml

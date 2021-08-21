@@ -1,0 +1,40 @@
+---
+
+- name: ensure volatility plugins directory exists
+  file:
+    dest: "{{ volatility_installdir }}/volatility3plugins"
+    mode: '0755'
+    state: directory
+
+- name: autoruns
+  git:
+    repo: https://github.com/Telindus-CSIRT/volatility3-autoruns
+    dest: "{{ volatility_installdir }}/volatility3plugins/volatility-autoruns"
+    version: "{{ vol3_autoruns_version }}"
+
+- name: Check volatility plugins directory 1
+  stat: path=/usr/lib/python3.6/dist-packages/volatility/plugins
+  register: plugins1
+- name: Check volatility plugins directory 1
+  stat: path=/usr/local/lib/python3.6/dist-packages/volatility/plugins
+  register: plugins2
+- name: Set fact volatility plugins directory 1
+  set_fact:
+    vol_plugins: /usr/lib/python3.8/dist-packages/volatility/plugins
+  when: plugins1.stat.exists
+- name: Set fact volatility plugins directory 2
+  set_fact:
+    vol_plugins: /usr/local/lib/python3.8/dist-packages/volatility/plugins
+  when: plugins2.stat.exists
+
+- name: Check if autoruns plugin is present
+  stat: path="{{ vol_plugins }}/autoruns.py"
+  register: autoruns
+  when: vol_plugins is defined
+- name: map autoruns in volatility plugins tree
+  file:
+    src: "{{ volatility_installdir }}/volatility3plugins/volatility-autoruns/autoruns.py"
+    dest: "{{ vol_plugins }}/autoruns.py"
+    mode: '0644'
+    state: link
+  when: vol_plugins is defined and not autoruns.stat.exists

@@ -16,7 +16,7 @@
 - include: volatility3.yml
   when: >
     volatility_target != '2'
-- include: volatility-modules.yml
+
 # - include: volatility-win10.yml
 
 - include: memory-samples.yml
