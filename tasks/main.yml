@@ -10,17 +10,17 @@
   include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_os_family == "RedHat"
 
-- include: volatility.yml
+- import_tasks: volatility.yml
   when: >
     volatility_target == '2'
-- include: volatility3.yml
+- import_tasks: volatility3.yml
   when: >
     volatility_target != '2'
 
-# - include: volatility-win10.yml
+# - import_tasks: volatility-win10.yml
 
-- include: memory-samples.yml
+- import_tasks: memory-samples.yml
   when: volatility_samples is defined and volatility_samples
 
-- include: volatility-scan.yml
+- import_tasks: volatility-scan.yml
   when: volatility_scan is defined and volatility_scan

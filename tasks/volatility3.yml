@@ -75,4 +75,4 @@
   register: pkg_result
   until: pkg_result is success
 
-- include: volatility3-modules.yml
+- import_tasks: volatility3-modules.yml
