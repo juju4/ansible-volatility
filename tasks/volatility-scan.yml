@@ -217,7 +217,8 @@
 
 ## wipe ? encrypt/sign archive? do on trusted computer anyway.
 
-- block:
+- name: pull
+  block:
     - name: archive output content
       archive:
         src: "{{ volatility_scan_outdir }}"

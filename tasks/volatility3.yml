@@ -15,7 +15,8 @@
   register: pkg_result
   until: pkg_result is success
 
-- block:
+- name: system pip3
+  block:
     - name: install volatility3 pip dependencies
       pip:
         name: "{{ volatility3_pip_pkg }}"
@@ -31,7 +32,8 @@
       register: pkg_result
       until: pkg_result is success
   when: not volatility_virtualenv
-- block:
+- name: virtualenv pip3
+  block:
     - name: ensure virtualenv is present
       package:
         name: "{{ python_virtualenv_pkg | default('python-virtualenv') }}"
