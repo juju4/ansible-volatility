@@ -4,13 +4,13 @@
 ## https://code.google.com/p/volatility/wiki/SampleMemoryImages
 
 - name: Ensure volatility samples directory exists
-  file:
+  ansible.builtin.file:
     dest: "{{ volatility_installdir }}/samples"
     state: directory
     mode: '0755'
 
 - name: Download memory samples
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ volatility_installdir }}/samples"
     mode: '0600'
@@ -26,6 +26,6 @@
     - http://www.jonrajewski.com/data/Malware/stuxnet.vmem.zip
 
 - name: add unrar to unarchive
-  package: name={{ unrar_pkg }} state=present
+  ansible.builtin.package: name={{ unrar_pkg }} state=present
   register: pkg_result
   until: pkg_result is success

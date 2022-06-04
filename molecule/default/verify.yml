@@ -4,55 +4,55 @@
   hosts: vol
   pre_tasks:
     - name: Debian | set fact
-      set_fact:
+      ansible.builtin.set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol.py
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
       when: ansible_os_family == 'Debian'
     - name: RedHat | set fact
-      set_fact:
+      ansible.builtin.set_fact:
         vol_py_filepath: /usr/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
       when: ansible_os_family == "RedHat"
     - name: Volatility3 | set fact
-      set_fact:
+      ansible.builtin.set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_h: 'Volatility 3 Framework'
       when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18)
   tasks:
     - name: Ensure vol.py file exists
-      stat:
+      ansible.builtin.stat:
         path: "{{ vol_py_filepath }}"
       register: volpy
     - name: Validate vol.py present
-      assert:
+      ansible.builtin.assert:
         that:
           - volpy.stat.exists
           - volpy.stat.size != 0
           - volpy.stat.islnk
           - volpy.stat.lnk_target == vol_py_lnk
     - name: Ensure volatility profile directory exists
-      stat:
+      ansible.builtin.stat:
         path: "{{ vol_profiles_filepath }}"
       register: prof
     - name: Validate volatility profile directory present
-      assert:
+      ansible.builtin.assert:
         that: prof.stat.exists and prof.stat.mode == '0755'
       when: >
         not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) and
         not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
 
     - name: Ensure vol.py working
-      command: vol.py -h
+      ansible.builtin.command: vol.py -h
       register: ps
       changed_when: false
       ignore_errors: true
     - name: Validate vol.py output
-      assert:
+      ansible.builtin.assert:
         that: ps.stdout and vol_h in ps.stdout
       when: >
         not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)

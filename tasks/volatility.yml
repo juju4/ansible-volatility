@@ -1,33 +1,33 @@
 ---
 
 - name: Set fact pip_url HEAD
-  set_fact:
+  ansible.builtin.set_fact:
     # pip_url: https://github.com/volatilityfoundation/volatility.git
     pip_url: https://github.com/volatilityfoundation/volatility/archive/master.tar.gz
   when: volatility_release == 'HEAD'
 - name: Set fact pip_url non-HEAD
-  set_fact:
+  ansible.builtin.set_fact:
     pip_url: https://github.com/volatilityfoundation/volatility/archive/{{ volatility_release }}.tar.gz
   when: volatility_release != 'HEAD'
 - name: Enforce python2
-  set_fact:
+  ansible.builtin.set_fact:
     python_bin: python
     pip_bin: pip
 - name: RedHat 8 | Enforce python2
-  set_fact:
+  ansible.builtin.set_fact:
     python_bin: python2
     pip_bin: pip2
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
 
 - name: install python dependencies
-  package: name={{ python2_deps }} state=present
+  ansible.builtin.package: name={{ python2_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 
 - name: system pip
   block:
     - name: install setuptools pip dependencies - python2
-      pip:
+      ansible.builtin.pip:
         name: setuptools
         version: 44.0.0
         state: present
@@ -35,14 +35,14 @@
       until: pkg_result is success
 
     - name: install volatility pip dependencies
-      pip:
+      ansible.builtin.pip:
         name: "{{ volatility_pip_pkg }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
     - name: install volatility
-      pip:
+      ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
         executable: "{{ pip_bin | default('pip') }}"
@@ -52,14 +52,14 @@
 - name: virtualenv pip
   block:
     - name: ensure virtualenv is present
-      package:
+      ansible.builtin.package:
         name: "{{ python_virtualenv_pkg | default('python-virtualenv') }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
     - name: install setuptools pip dependencies - python2 - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: setuptools
         version: 44.0.0
         state: present
@@ -70,7 +70,7 @@
 
     # 3.5.0: error: ‘for’ loop initial declarations are only allowed in C99 mode
     - name: Centos7 | force distorm3 3.4.4 - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: distorm3
         version: 3.4.4
         state: present
@@ -81,7 +81,7 @@
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
 
     - name: install volatility pip dependencies - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: "{{ [ 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
@@ -90,7 +90,7 @@
       until: pkg_result is success
 
     - name: install volatility - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
@@ -99,7 +99,7 @@
       until: pkg_result is success
 
     - name: symlink volatility in usual path
-      file:
+      ansible.builtin.file:
         src: "{{ volatility_virtualenv }}/bin/vol.py"
         dest: "{{ vol_bin_path }}"
         mode: '0755'
@@ -107,12 +107,12 @@
   when: volatility_virtualenv|string
 
 - name: ensure git is present
-  package: name=git state=present
+  ansible.builtin.package: name=git state=present
   register: pkg_result
   until: pkg_result is success
 
 - name: Volatility profiles
-  git:
+  ansible.builtin.git:
     repo: https://github.com/volatilityfoundation/profiles.git
     dest: "{{ volatility_installdir }}/profiles"
     version: "{{ volatility_profiles_version | default('1c6bde858855c6ac6a3a0691ece3af65afb877e6') }}"
