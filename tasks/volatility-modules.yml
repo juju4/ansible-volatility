@@ -1,6 +1,6 @@
 ---
 
-- name: ensure volatility plugins directory exists
+- name: Ensure volatility plugins directory exists
   ansible.builtin.file:
     dest: "{{ volatility_installdir }}/volatilityplugins"
     mode: '0755'
@@ -13,25 +13,25 @@
     dest: "{{ volatility_installdir }}/volatilityplugins/community"
     version: "{{ vol_volatilityplugins_version | default('e0a6dec5b1f5d829a806a3bc21e460523e73db81') }}"
 
-- name: editbox - extracts the text from Windows Edit controls
+- name: Editbox - extracts the text from Windows Edit controls
   ansible.builtin.git:
     repo: https://github.com/bridgeythegeek/editbox.git
     dest: "{{ volatility_installdir }}/volatilityplugins/editbox"
     version: "{{ vol_editbox_version | default('0baed53c37eb6d3822dd50fc29078c908a20054e') }}"
 
-- name: malware config extractor - plugx, andromeda
+- name: Malware config extractor - plugx, andromeda
   ansible.builtin.git:
     repo: https://github.com/arbor-jjones/volatility_plugins.git
     dest: "{{ volatility_installdir }}/volatilityplugins/plugx+andromeda"
     version: "{{ vol_plugxand_version | default('0399a57480ad8a1968465647ebb47c1b740abf35') }}"
 
-- name: autoruns
+- name: Autoruns
   ansible.builtin.git:
     repo: https://github.com/tomchop/volatility-autoruns
     dest: "{{ volatility_installdir }}/volatilityplugins/volatility-autoruns"
     version: "{{ vol_autoruns_version | default('a39efc8848ca8f642cc58f16aa04c71244b31880') }}"
 
-- name: bitlocker keys retrieving
+- name: Bitlocker keys retrieving
   ansible.builtin.git:
     repo: https://github.com/elceef/bitlocker
     dest: "{{ volatility_installdir }}/volatilityplugins/elceef-bitlocker"
@@ -64,7 +64,7 @@
   ansible.builtin.stat: path="{{ vol_plugins }}/autoruns.py"
   register: autoruns
   when: vol_plugins is defined
-- name: map autoruns in volatility plugins tree
+- name: Map autoruns in volatility plugins tree
   ansible.builtin.file:
     src: "{{ volatility_installdir }}/volatilityplugins/volatility-autoruns/autoruns.py"
     dest: "{{ vol_plugins }}/autoruns.py"
@@ -76,7 +76,7 @@
   ansible.builtin.stat: path="{{ vol_plugins }}/cobaltstrikescan.py"
   register: cobalt
   when: vol_plugins is defined
-- name: map cobaltstrikescan.py in volatility plugins tree
+- name: Map cobaltstrikescan.py in volatility plugins tree
   ansible.builtin.file:
     src: "{{ volatility_installdir }}/volatilityplugins/aa-tools/cobaltstrikescan.py"
     dest: "{{ vol_plugins }}/cobaltstrikescan.py"

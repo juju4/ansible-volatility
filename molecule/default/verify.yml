@@ -22,7 +22,7 @@
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_h: 'Volatility 3 Framework'
-      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18)
+      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18)
   tasks:
     - name: Ensure vol.py file exists
       ansible.builtin.stat:
@@ -43,8 +43,8 @@
       ansible.builtin.assert:
         that: prof.stat.exists and prof.stat.mode == '0755'
       when: >
-        not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) and
-        not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
+        not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18) and
+        not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)
 
     - name: Ensure vol.py working
       ansible.builtin.command: vol.py -h
@@ -55,4 +55,4 @@
       ansible.builtin.assert:
         that: ps.stdout and vol_h in ps.stdout
       when: >
-        not (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
+        not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)

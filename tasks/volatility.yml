@@ -19,14 +19,14 @@
     pip_bin: pip2
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
 
-- name: install python dependencies
+- name: Install python dependencies
   ansible.builtin.package: name={{ python2_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 
-- name: system pip
+- name: System pip
   block:
-    - name: install setuptools pip dependencies - python2
+    - name: Install setuptools pip dependencies - python2
       ansible.builtin.pip:
         name: setuptools
         version: 44.0.0
@@ -34,14 +34,14 @@
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility pip dependencies
+    - name: Install volatility pip dependencies
       ansible.builtin.pip:
         name: "{{ volatility_pip_pkg }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility
+    - name: Install volatility
       ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
@@ -49,16 +49,16 @@
       register: pkg_result
       until: pkg_result is success
   when: not volatility_virtualenv
-- name: virtualenv pip
+- name: Virtualenv pip
   block:
-    - name: ensure virtualenv is present
+    - name: Ensure virtualenv is present
       ansible.builtin.package:
         name: "{{ python_virtualenv_pkg | default('python-virtualenv') }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
-    - name: install setuptools pip dependencies - python2 - virtualenv
+    - name: Install setuptools pip dependencies - python2 - virtualenv
       ansible.builtin.pip:
         name: setuptools
         version: 44.0.0
@@ -80,16 +80,16 @@
       until: pkg_result is success
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
 
-    - name: install volatility pip dependencies - virtualenv
+    - name: Install volatility pip dependencies - virtualenv
       ansible.builtin.pip:
-        name: "{{ [ 'pip', 'pycrypto' ] + volatility_pip_pkg }}"
+        name: "{{ ['pip', 'pycrypto'] + volatility_pip_pkg }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility - virtualenv
+    - name: Install volatility - virtualenv
       ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
@@ -98,15 +98,15 @@
       register: pkg_result
       until: pkg_result is success
 
-    - name: symlink volatility in usual path
+    - name: Symlink volatility in usual path
       ansible.builtin.file:
         src: "{{ volatility_virtualenv }}/bin/vol.py"
         dest: "{{ vol_bin_path }}"
         mode: '0755'
         state: link
-  when: volatility_virtualenv|string
+  when: volatility_virtualenv | string
 
-- name: ensure git is present
+- name: Ensure git is present
   ansible.builtin.package: name=git state=present
   register: pkg_result
   until: pkg_result is success

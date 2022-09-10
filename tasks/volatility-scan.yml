@@ -3,12 +3,12 @@
 ## https://digital-forensics.sans.org/media/Poster-2015-Memory-Forensics.pdf
 ## https://volatility-labs.blogspot.ca/2016/08/automating-detection-of-known-malware.html
 
-- name: ensure clamav is installed
+- name: Ensure clamav is installed
   ansible.builtin.package: name=clamav state=present
   register: pkg_result
   until: pkg_result is success
 
-- name: ensure target directories exist
+- name: Ensure target directories exist
   ansible.builtin.file: dest={{ item }} state=directory mode=0755
   with_items:
     - "{{ volatility_scan_remote_path | dirname }}"
@@ -17,7 +17,7 @@
     - "{{ volatility_scan_outdir }}/malfind"
     - "{{ volatility_scan_outdir }}/moddump"
 
-- name: push file to analyze from orchestrator
+- name: Push file to analyze from orchestrator
   ansible.builtin.copy:
     src: "{{ volatility_scan_orchestrator_src }}"
     dest: "{{ volatility_scan_remote_path }}"
@@ -25,14 +25,14 @@
     remote_src: "{{ volatility_scan_remote }}"
   when: volatility_remote_src is defined and volatility_remote_src
 
-- name: uncompress file to analyze
+- name: Uncompress file to analyze
   ansible.builtin.unarchive:
     src: "{{ volatility_scan_remote_path }}"
     dest: "{{ volatility_scan_remote_path | dirname }}"
     mode: '0600'
   when: volatility_scan_unarchive
 
-- name: execute volatility psxview
+- name: Execute volatility psxview
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -42,7 +42,7 @@
     creates: "{{ volatility_scan_outdir }}/psxview.txt"
     executable: /bin/bash
 
-- name: execute volatility dlllist
+- name: Execute volatility dlllist
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -52,7 +52,7 @@
     creates: "{{ volatility_scan_outdir }}/dlllist.txt"
     executable: /bin/bash
 
-- name: execute volatility dlldump
+- name: Execute volatility dlldump
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -62,7 +62,7 @@
     creates: "{{ volatility_scan_outdir }}/dlldump.txt"
     executable: /bin/bash
 
-- name: execute volatility malfind
+- name: Execute volatility malfind
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -72,7 +72,7 @@
     creates: "{{ volatility_scan_outdir }}/malfind.txt"
     executable: /bin/bash
 
-- name: execute volatility moddump
+- name: Execute volatility moddump
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -82,7 +82,7 @@
     creates: "{{ volatility_scan_outdir }}/moddump.txt"
     executable: /bin/bash
 
-- name: check file types of volatility output
+- name: Check file types of volatility output
   ansible.builtin.shell: |
     set -o pipefail
     file {{ volatility_scan_outdir }}/* | egrep -i '(PE32 executable|UPX compressed|data)' |
@@ -91,14 +91,14 @@
     creates: "{{ volatility_scan_outdir }}/file.txt"
     executable: /bin/bash
 
-- name: execute clamscan on extracted file
+- name: Execute clamscan on extracted file
   ansible.builtin.command: >
     clamscan -ir -l {{ volatility_scan_outdir }}/clamscan.txt {{ volatility_scan_outdir }}/
   args:
     creates: "{{ volatility_scan_outdir }}/clamscan.txt"
   failed_when: false
 
-- name: execute volatility netscan
+- name: Execute volatility netscan
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -108,7 +108,7 @@
     creates: "{{ volatility_scan_outdir }}/netscan.txt"
     executable: /bin/bash
 
-- name: execute volatility ssdt
+- name: Execute volatility ssdt
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -117,12 +117,12 @@
   args:
     creates: "{{ volatility_scan_outdir }}/ssdt.txt"
     executable: /bin/bash
-- name: match ntosk|win32k
+- name: Match ntosk|win32k
   ansible.builtin.command: "egrep -v '(ntosk|win32k)' {{ volatility_scan_outdir }}/ssdt.txt"
   changed_when: false
   failed_when: false
 
-- name: execute volatility usnparser
+- name: Execute volatility usnparser
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -133,7 +133,7 @@
     creates: "{{ volatility_scan_outdir }}/usnparser.txt"
     executable: /bin/bash
 
-- name: execute volatility autoruns
+- name: Execute volatility autoruns
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -143,7 +143,7 @@
     creates: "{{ volatility_scan_outdir }}/autoruns.txt"
     executable: /bin/bash
 
-- name: execute volatility ethscan (pcap recovery)
+- name: Execute volatility ethscan (pcap recovery)
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -153,7 +153,7 @@
     creates: "{{ volatility_scan_outdir }}/ethscan.txt"
     executable: /bin/bash
 
-- name: execute volatility netscan (vista+)
+- name: Execute volatility netscan (vista+)
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -163,7 +163,7 @@
     creates: "{{ volatility_scan_outdir }}/netscan.txt"
     executable: /bin/bash
 
-- name: execute volatility mimikatz
+- name: Execute volatility mimikatz
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -173,7 +173,7 @@
     creates: "{{ volatility_scan_outdir }}/mimikatz.txt"
     executable: /bin/bash
 
-- name: execute volatility firefoxhistory
+- name: Execute volatility firefoxhistory
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -184,7 +184,7 @@
     creates: "{{ volatility_scan_outdir }}/firefoxhistory.txt"
     executable: /bin/bash
 
-- name: execute volatility consoles
+- name: Execute volatility consoles
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -194,7 +194,7 @@
     creates: "{{ volatility_scan_outdir }}/consoles.txt"
     executable: /bin/bash
 
-- name: execute volatility cmdscan
+- name: Execute volatility cmdscan
   ansible.builtin.shell: |
     set -o pipefail
     vol.py -f {{ volatility_scan_remote_path | dirname }}/{{ volatility_scan_file }}
@@ -204,7 +204,7 @@
     creates: "{{ volatility_scan_outdir }}/cmdscan.txt"
     executable: /bin/bash
 
-- name: check results
+- name: Check results
   ansible.builtin.command: "{{ item }}"
   with_items:
     - "ls -lh {{ volatility_scan_outdir }}"
@@ -217,14 +217,14 @@
 
 ## wipe ? encrypt/sign archive? do on trusted computer anyway.
 
-- name: pull
+- name: Pull
   block:
-    - name: archive output content
+    - name: Archive output content
       ansible.builtin.archive:
         src: "{{ volatility_scan_outdir }}"
         dest: "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
         mode: '0600'
-    - name: retrieve output dir to orchestrator
+    - name: Retrieve output dir to orchestrator
       ansible.builtin.fetch: "src={{ item }} dest={{ volatility_scan_pulldir }}/"
       with_items:
         - "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"

@@ -10,21 +10,21 @@
     pip_url: volatility3
   when: volatility_release != 'HEAD'
 
-- name: install git and python dependencies
+- name: Install git and python dependencies
   ansible.builtin.package: name={{ python_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 
-- name: system pip3
+- name: System pip3
   block:
-    - name: install volatility3 pip dependencies
+    - name: Install volatility3 pip dependencies
       ansible.builtin.pip:
         name: "{{ volatility3_pip_pkg }}"
         state: present
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility3
+    - name: Install volatility3
       ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
@@ -32,24 +32,24 @@
       register: pkg_result
       until: pkg_result is success
   when: not volatility_virtualenv
-- name: virtualenv pip3
+- name: Virtualenv pip3
   block:
-    - name: ensure virtualenv is present
+    - name: Ensure virtualenv is present
       ansible.builtin.package:
         name: "{{ python_virtualenv_pkg | default('python-virtualenv') }}"
         state: present
       register: pkg_result
       until: pkg_result is success
-    - name: install volatility3 pip dependencies - virtualenv
+    - name: Install volatility3 pip dependencies - virtualenv
       ansible.builtin.pip:
-        name: "{{ [ 'setuptools', 'pip' ] + volatility3_pip_pkg }}"
+        name: "{{ ['setuptools', 'pip'] + volatility3_pip_pkg }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
       until: pkg_result is success
 
-    - name: install volatility3 - virtualenv
+    - name: Install volatility3 - virtualenv
       ansible.builtin.pip:
         name: "{{ pip_url }}"
         state: present
@@ -58,7 +58,7 @@
       register: pkg_result
       until: pkg_result is success
 
-    - name: symlink volatility in usual path
+    - name: Symlink volatility in usual path
       ansible.builtin.file:
         src: "{{ volatility_virtualenv }}/bin/vol"
         dest: "{{ vol_bin_path }}"
@@ -70,9 +70,9 @@
         path: "{{ volatility_virtualenv }}/lib/python3.8/site-packages/volatility3/symbols/windows"
         state: directory
         mode: '1777'
-  when: volatility_virtualenv|string
+  when: volatility_virtualenv | string
 
-- name: ensure git is present
+- name: Ensure git is present
   ansible.builtin.package: name=git state=present
   register: pkg_result
   until: pkg_result is success

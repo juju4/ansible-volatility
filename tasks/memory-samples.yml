@@ -25,7 +25,7 @@
     # - http://amnesia.gtisc.gatech.edu/%7Emoyix/ds_fuzz_hidden_proc.img.bz2
     - http://www.jonrajewski.com/data/Malware/stuxnet.vmem.zip
 
-- name: add unrar to unarchive
+- name: Add unrar to unarchive
   ansible.builtin.package: name={{ unrar_pkg }} state=present
   register: pkg_result
   until: pkg_result is success

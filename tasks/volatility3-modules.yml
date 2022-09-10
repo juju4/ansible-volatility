@@ -1,12 +1,12 @@
 ---
 
-- name: ensure volatility plugins directory exists
+- name: Ensure volatility plugins directory exists
   ansible.builtin.file:
     dest: "{{ volatility_installdir }}/volatility3plugins"
     mode: '0755'
     state: directory
 
-- name: autoruns
+- name: Autoruns
   ansible.builtin.git:
     repo: https://github.com/Telindus-CSIRT/volatility3-autoruns
     dest: "{{ volatility_installdir }}/volatility3plugins/volatility-autoruns"
@@ -31,7 +31,7 @@
   ansible.builtin.stat: path="{{ vol_plugins }}/autoruns.py"
   register: autoruns
   when: vol_plugins is defined
-- name: map autoruns in volatility plugins tree
+- name: Map autoruns in volatility plugins tree
   ansible.builtin.file:
     src: "{{ volatility_installdir }}/volatility3plugins/volatility-autoruns/autoruns.py"
     dest: "{{ vol_plugins }}/autoruns.py"
