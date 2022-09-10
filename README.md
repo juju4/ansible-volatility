@@ -17,7 +17,7 @@ It was tested on the following versions:
 
 ### Operating systems
 
-Tested with xenial, trusty and centos7
+Tested with 18.04, 20.04, 22.04 and centos7
 
 ## Example Playbook
 
