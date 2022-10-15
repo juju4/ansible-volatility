@@ -20,11 +20,14 @@
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
 
 - name: Install python dependencies
-  ansible.builtin.package: name={{ python2_deps }} state=present
+  ansible.builtin.package:
+    name: "{{ python2_deps }}"
+    state: "present"
   register: pkg_result
   until: pkg_result is success
 
 - name: System pip
+  when: not volatility_virtualenv
   block:
     - name: Install setuptools pip dependencies - python2
       ansible.builtin.pip:
@@ -48,8 +51,8 @@
         executable: "{{ pip_bin | default('pip') }}"
       register: pkg_result
       until: pkg_result is success
-  when: not volatility_virtualenv
 - name: Virtualenv pip
+  when: volatility_virtualenv | string
   block:
     - name: Ensure virtualenv is present
       ansible.builtin.package:
@@ -104,10 +107,11 @@
         dest: "{{ vol_bin_path }}"
         mode: '0755'
         state: link
-  when: volatility_virtualenv | string
 
 - name: Ensure git is present
-  ansible.builtin.package: name=git state=present
+  ansible.builtin.package:
+    name: git
+    state: present
   register: pkg_result
   until: pkg_result is success
 
@@ -117,4 +121,5 @@
     dest: "{{ volatility_installdir }}/profiles"
     version: "{{ volatility_profiles_version | default('1c6bde858855c6ac6a3a0691ece3af65afb877e6') }}"
 
-- import_tasks: volatility-modules.yml
+- name: Import volatility-modules
+  ansible.builtin.import_tasks: volatility-modules.yml

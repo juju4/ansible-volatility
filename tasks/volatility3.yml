@@ -11,11 +11,14 @@
   when: volatility_release != 'HEAD'
 
 - name: Install git and python dependencies
-  ansible.builtin.package: name={{ python_deps }} state=present
+  ansible.builtin.package:
+    name: "{{ python_deps }}"
+    state: "present"
   register: pkg_result
   until: pkg_result is success
 
 - name: System pip3
+  when: not volatility_virtualenv
   block:
     - name: Install volatility3 pip dependencies
       ansible.builtin.pip:
@@ -31,8 +34,8 @@
         executable: "{{ pip_bin | default('pip') }}"
       register: pkg_result
       until: pkg_result is success
-  when: not volatility_virtualenv
 - name: Virtualenv pip3
+  when: volatility_virtualenv | string
   block:
     - name: Ensure virtualenv is present
       ansible.builtin.package:
@@ -70,11 +73,13 @@
         path: "{{ volatility_virtualenv }}/lib/python3.8/site-packages/volatility3/symbols/windows"
         state: directory
         mode: '1777'
-  when: volatility_virtualenv | string
 
 - name: Ensure git is present
-  ansible.builtin.package: name=git state=present
+  ansible.builtin.package:
+    name: git
+    state: present
   register: pkg_result
   until: pkg_result is success
 
-- import_tasks: volatility3-modules.yml
+- name: Import volatility3-modules
+  ansible.builtin.import_tasks: volatility3-modules.yml

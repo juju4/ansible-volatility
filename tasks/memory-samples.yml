@@ -26,6 +26,8 @@
     - http://www.jonrajewski.com/data/Malware/stuxnet.vmem.zip
 
 - name: Add unrar to unarchive
-  ansible.builtin.package: name={{ unrar_pkg }} state=present
+  ansible.builtin.package:
+    name: "{{ unrar_pkg }}"
+    state: "present"
   register: pkg_result
   until: pkg_result is success

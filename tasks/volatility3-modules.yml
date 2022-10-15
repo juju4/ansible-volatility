@@ -13,10 +13,12 @@
     version: "{{ vol3_autoruns_version }}"
 
 - name: Check volatility plugins directory 1
-  ansible.builtin.stat: path=/usr/lib/python3.6/dist-packages/volatility/plugins
+  ansible.builtin.stat:
+    path: /usr/lib/python3.6/dist-packages/volatility/plugins
   register: plugins1
 - name: Check volatility plugins directory 1
-  ansible.builtin.stat: path=/usr/local/lib/python3.6/dist-packages/volatility/plugins
+  ansible.builtin.stat:
+    path: /usr/local/lib/python3.6/dist-packages/volatility/plugins
   register: plugins2
 - name: Set fact volatility plugins directory 1
   ansible.builtin.set_fact:
@@ -28,7 +30,8 @@
   when: plugins2.stat.exists
 
 - name: Check if autoruns plugin is present
-  ansible.builtin.stat: path="{{ vol_plugins }}/autoruns.py"
+  ansible.builtin.stat:
+    path: "{{ vol_plugins }}/autoruns.py"
   register: autoruns
   when: vol_plugins is defined
 - name: Map autoruns in volatility plugins tree

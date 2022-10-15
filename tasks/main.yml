@@ -10,17 +10,21 @@
   ansible.builtin.include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_os_family == "RedHat"
 
-- import_tasks: volatility.yml
+- name: Import volatility2
+  ansible.builtin.import_tasks: volatility.yml
   when: >
     volatility_target == '2'
-- import_tasks: volatility3.yml
+- name: Import volatility3
+  ansible.builtin.import_tasks: volatility3.yml
   when: >
     volatility_target != '2'
 
-# - import_tasks: volatility-win10.yml
+# - ansible.builtin.import_tasks: volatility-win10.yml
 
-- import_tasks: memory-samples.yml
+- name: Import memory-samples
+  ansible.builtin.import_tasks: memory-samples.yml
   when: volatility_samples is defined and volatility_samples
 
-- import_tasks: volatility-scan.yml
+- name: Import volatility-scan
+  ansible.builtin.import_tasks: volatility-scan.yml
   when: volatility_scan is defined and volatility_scan

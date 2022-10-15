@@ -46,10 +46,12 @@
     version: "{{ vol_aatools_version | default('2cbac3cb63346f07751dd6a44643306ac619fe6a') }}"
 
 - name: Check volatility plugins directory 1
-  ansible.builtin.stat: path=/usr/lib/python2.7/dist-packages/volatility/plugins
+  ansible.builtin.stat:
+    path: /usr/lib/python2.7/dist-packages/volatility/plugins
   register: plugins1
 - name: Check volatility plugins directory 1
-  ansible.builtin.stat: path=/usr/local/lib/python2.7/dist-packages/volatility/plugins
+  ansible.builtin.stat:
+    path: /usr/local/lib/python2.7/dist-packages/volatility/plugins
   register: plugins2
 - name: Set fact volatility plugins directory 1
   ansible.builtin.set_fact:
@@ -61,7 +63,8 @@
   when: plugins2.stat.exists
 
 - name: Check if autoruns plugin is present
-  ansible.builtin.stat: path="{{ vol_plugins }}/autoruns.py"
+  ansible.builtin.stat:
+    path: "{{ vol_plugins }}/autoruns.py"
   register: autoruns
   when: vol_plugins is defined
 - name: Map autoruns in volatility plugins tree
@@ -73,7 +76,8 @@
   when: vol_plugins is defined and not autoruns.stat.exists
 
 - name: Check if cobaltstrikescan plugin is present
-  ansible.builtin.stat: path="{{ vol_plugins }}/cobaltstrikescan.py"
+  ansible.builtin.stat:
+    path: "{{ vol_plugins }}/cobaltstrikescan.py"
   register: cobalt
   when: vol_plugins is defined
 - name: Map cobaltstrikescan.py in volatility plugins tree

@@ -8,7 +8,8 @@
   become_user: "{{ current_user }}"
 
 - name: Check if Win10TPx64.vmem.zip is present
-  ansible.builtin.stat: path={{ volatility_installdir }}/sample/Win10TPx64.vmem.zip
+  ansible.builtin.stat:
+    path: "{{ volatility_installdir }}/sample/Win10TPx64.vmem.zip"
   register: win10m
 - name: Win10 memory sample
   ansible.builtin.get_url:
