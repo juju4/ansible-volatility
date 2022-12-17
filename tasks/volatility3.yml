@@ -30,6 +30,7 @@
     - name: Install volatility3
       ansible.builtin.pip:
         name: "{{ pip_url }}"
+        version: "{{ _volatility_release | default(omit) }}"
         state: present
         executable: "{{ pip_bin | default('pip') }}"
       register: pkg_result
