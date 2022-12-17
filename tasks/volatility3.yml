@@ -55,6 +55,7 @@
     - name: Install volatility3 - virtualenv
       ansible.builtin.pip:
         name: "{{ pip_url }}"
+        version: "{{ _volatility_release | default(omit) }}"
         state: present
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"

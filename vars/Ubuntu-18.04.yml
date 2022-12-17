@@ -27,3 +27,6 @@ vol_bin_path: "/usr/local/bin/vol.py"
 volatility3_pip_pkg:
   - pefile
   - yara-python
+
+# volatility3 HEAD requires python >= 3.7
+_volatility_release: 2.0.1
