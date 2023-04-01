@@ -16,6 +16,7 @@ python_deps:
   - gcc
   - libfuzzy-dev
   - python3-pil
+  - libssl-dev
 
 python_bin: python3
 pip_bin: pip3
