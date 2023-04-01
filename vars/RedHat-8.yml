@@ -13,6 +13,7 @@ python_deps:
   - gcc
   - python3-pillow
   - git
+  - openssl-devel
 
 python_virtualenv_pkg: python3-virtualenv
 

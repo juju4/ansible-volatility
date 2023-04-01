@@ -17,6 +17,7 @@ python_deps:
   - gcc
   - libfuzzy-dev
   - python3-pil
+  - libssl-dev
 
 python_bin: python3
 python_virtualenv_pkg: python3-virtualenv
