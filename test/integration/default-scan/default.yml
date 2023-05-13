@@ -1,8 +1,9 @@
 ---
 
-- hosts: all
+- name: Test integration playbook
+  hosts: all
   vars:
-    - volatility_samples: true
-    - volatility_scan: true
+    volatility_samples: true
+    volatility_scan: true
   roles:
     - juju4.volatility

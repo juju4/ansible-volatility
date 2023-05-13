@@ -228,7 +228,7 @@
   block:
     - name: Archive output content
       community.general.archive:
-        src: "{{ volatility_scan_outdir }}"
+        path: "{{ volatility_scan_outdir }}"
         dest: "/tmp/volatility-scan-{{ volatility_scan_file | basename }}.tar.gz"
         mode: '0600'
     - name: Retrieve output dir to orchestrator
