@@ -45,6 +45,7 @@
       when: >
         not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18) and
         not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)
+      failed_when: false  # no profiles dir for volatility 3
 
     - name: Ensure vol.py working
       ansible.builtin.command: vol.py -h
