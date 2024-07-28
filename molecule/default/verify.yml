@@ -6,7 +6,7 @@
     - name: Debian | set fact
       ansible.builtin.set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
-        vol_py_lnk: /usr/local/env-volatility/bin/vol.py
+        vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
       when: ansible_os_family == 'Debian'
