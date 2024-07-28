@@ -54,6 +54,6 @@
       ignore_errors: true
     - name: Validate vol.py output
       ansible.builtin.assert:
-        that: ps.stdout and vol_h in ps.stdout
+        that: ps.stdout and ((vol_h | lower) in (ps.stdout | lower))
       when: >
         not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)
