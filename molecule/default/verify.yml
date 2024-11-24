@@ -22,7 +22,9 @@
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_h: 'Volatility 3 Framework'
-      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18)
+      when: >
+        (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18) or
+        (ansible_distribution == "Debian" and ansible_distribution_major_version | int >= 12)
   tasks:
     - name: Ensure vol.py file exists
       ansible.builtin.stat:
