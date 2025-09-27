@@ -8,7 +8,7 @@
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_profiles_filepath: /usr/local/share/volatility/profiles
-        vol_h: 'Usage: Volatility'
+        vol_h: 'usage: vol.py'
       when: ansible_os_family == 'Debian'
     - name: RedHat | set fact
       ansible.builtin.set_fact:
