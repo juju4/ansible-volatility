@@ -1,0 +1,29 @@
+---
+
+python2_deps:
+  - python2
+  - python2-devel
+  - python2-pip
+  - gcc
+
+python_deps:
+  - python312
+  - python312-devel
+  - python3-pip
+  - gcc
+  - python3-pillow
+  - git
+  - openssl-devel
+
+python_virtualenv_pkg: python3-virtualenv
+
+python_bin: python3
+pip_bin: pip3
+
+unrar_pkg: 'p7zip'
+
+vol_bin_path: "/usr/bin/vol.py"
+
+volatility3_pip_pkg:
+  - pefile
+  - yara-python
