@@ -7,8 +7,8 @@ python2_deps:
   - gcc
 
 python_deps:
-  - python36
-  - python36-devel
+  - python39
+  - python39-devel
   - python3-pip
   - gcc
   - python3-pillow
