@@ -17,7 +17,7 @@
   ansible.builtin.set_fact:
     python_bin: python2
     pip_bin: pip2
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '8'
+  when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == '8'
 
 - name: Install python dependencies
   ansible.builtin.package:
@@ -81,7 +81,7 @@
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
       until: pkg_result is success
-      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
+      when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == '7'
 
     - name: Install volatility pip dependencies - virtualenv
       ansible.builtin.pip:
