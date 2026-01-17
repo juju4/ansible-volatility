@@ -9,22 +9,22 @@
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'usage: vol.py'
-      when: ansible_os_family == 'Debian'
+      when: ansible_facts['os_family'] == 'Debian'
     - name: RedHat | set fact
       ansible.builtin.set_fact:
         vol_py_filepath: /usr/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_profiles_filepath: /usr/local/share/volatility/profiles
         vol_h: 'Usage: Volatility'
-      when: ansible_os_family == "RedHat"
+      when: ansible_facts['os_family'] == "RedHat"
     - name: Volatility3 | set fact
       ansible.builtin.set_fact:
         vol_py_filepath: /usr/local/bin/vol.py
         vol_py_lnk: /usr/local/env-volatility/bin/vol
         vol_h: 'usage: vol.py'
       when: >
-        (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18) or
-        (ansible_distribution == "Debian" and ansible_distribution_major_version | int >= 12)
+        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] | int >= 18) or
+        (ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_major_version'] | int >= 12)
   tasks:
     - name: Ensure vol.py file exists
       ansible.builtin.stat:
@@ -45,8 +45,8 @@
       ansible.builtin.assert:
         that: prof.stat.exists and prof.stat.mode == '0755'
       when: >
-        not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 18) and
-        not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)
+        not (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] | int >= 18) and
+        not (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] | int >= 7)
       failed_when: false  # no profiles dir for volatility 3
 
     - name: Ensure vol.py working
@@ -60,4 +60,4 @@
           - ps.stdout | length > 0
           - ((vol_h | lower) in (ps.stdout | lower))
       when: >
-        not (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 7)
+        not (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] | int >= 7)
