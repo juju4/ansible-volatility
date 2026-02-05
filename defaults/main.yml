@@ -2,7 +2,7 @@
 
 volatility_installdir: /usr/local/share/volatility
 # renovate: datasource=github-releases depName=volatilityfoundation/volatility3
-volatility_version: 'v2.26.2'
+volatility_version: 'v2.27.0'
 volatility_release: "{{ volatility_version }}"
 # volatility_release: 2.5
 volatility_target: '3'
