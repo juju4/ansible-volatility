@@ -55,7 +55,7 @@
         mode: '0600'
     - name: Ensure volatility3 and pip3 dependencies present
       ansible.builtin.pip:
-        requirements: "{{ volatility_installdir }}/requirements-volatility3.txt"
+        requirements: "{{ volatility_installdir }}/requirements-venv.txt"
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
