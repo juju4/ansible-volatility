@@ -20,21 +20,18 @@
 - name: System pip3
   when: not volatility_virtualenv
   block:
-    - name: Install volatility3 pip dependencies
+    - name: Copy volatility3 requirements
+      ansible.builtin.copy:
+        src: requirements-volatility3.txt
+        dest: "{{ volatility_installdir }}/requirements-volatility3.txt"
+        mode: '0600'
+    - name: Ensure volatility3 and pip3 dependencies present
       ansible.builtin.pip:
-        name: "{{ volatility3_pip_pkg }}"
-        state: present
+        requirements: "{{ volatility_installdir }}/requirements-volatility3.txt"
+        executable: "{{ pip_bin | default('pip3') }}"
       register: pkg_result
       until: pkg_result is success
 
-    - name: Install volatility3
-      ansible.builtin.pip:
-        name: "{{ pip_url }}"
-        version: "{{ _volatility_release | default(omit) }}"
-        state: present
-        executable: "{{ pip_bin | default('pip') }}"
-      register: pkg_result
-      until: pkg_result is success
 - name: Virtualenv pip3
   when: volatility_virtualenv | length > 0
   block:
@@ -44,20 +41,28 @@
         state: present
       register: pkg_result
       until: pkg_result is success
-    - name: Install volatility3 pip dependencies - virtualenv
+
+    - name: Copy venv requirements
+      ansible.builtin.copy:
+        src: requirements-venv.txt
+        dest: "{{ volatility_installdir }}/requirements-venv.txt"
+        mode: '0600'
+    - name: Ensure volatility3 and pip3 dependencies present
       ansible.builtin.pip:
-        name: "{{ ['setuptools', 'pip'] + volatility3_pip_pkg }}"
-        state: present
+        requirements: "{{ volatility_installdir }}/requirements-volatility3.txt"
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
       until: pkg_result is success
-
-    - name: Install volatility3 - virtualenv
+    - name: Copy volatility3 requirements
+      ansible.builtin.copy:
+        src: requirements-volatility3.txt
+        dest: "{{ volatility_installdir }}/requirements-volatility3.txt"
+        mode: '0600'
+    - name: Ensure volatility3 and pip3 dependencies present
       ansible.builtin.pip:
-        name: "{{ pip_url }}"
-        version: "{{ _volatility_release | default(omit) }}"
-        state: present
+        requirements: "{{ volatility_installdir }}/requirements-volatility3.txt"
+        executable: "{{ pip_bin | default('pip3') }}"
         virtualenv: "{{ volatility_virtualenv }}"
         virtualenv_python: "{{ python_bin | default('python') }}"
       register: pkg_result
