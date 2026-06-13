@@ -49,8 +49,8 @@
       until: pkg_result is success
 
     - name: Copy venv requirements
-      ansible.builtin.copy:
-        src: requirements-venv.txt
+      ansible.builtin.template:
+        src: requirements-venv.txt.j2
         dest: "{{ volatility_installdir }}/requirements-venv.txt"
         mode: '0600'
     - name: Ensure volatility3 and pip3 dependencies present

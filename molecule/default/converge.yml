@@ -18,6 +18,10 @@
       register: python3
       changed_when: "'installed' in python3.stdout"
       when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] | int >= 8)
+    - name: RedHat-9 | Set fact
+      ansible.builtin.set_fact:
+        volatility_pip_version: '26.0.1'
+      when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] | int == 9)
     - name: Gather Facts
       ansible.builtin.setup:
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] | int >= 16)
