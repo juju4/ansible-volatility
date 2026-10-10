@@ -1,7 +1,7 @@
+# volatility ansible role
+
 [![Actions Status - Main](https://github.com/juju4/ansible-volatility/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-volatility/actions?query=branch%3Amain)
 [![Actions Status - Devel](https://github.com/juju4/ansible-volatility/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-volatility/actions?query=branch%3Adevel)
-
-# volatility ansible role
 
 Ansible role to setup volatility
 http://www.volatilityfoundation.org/
